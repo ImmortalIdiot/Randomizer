@@ -1,26 +1,25 @@
 package com.immortalidiot.randomizer.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
 import com.immortalidiot.randomizer.ui.dice.diceDestination
 import com.immortalidiot.randomizer.ui.list.listDestination
 import com.immortalidiot.randomizer.ui.range.rangeDestination
 
 @Composable
 fun RandomNavGraph(
-    navController: NavHostController = rememberNavController()
+    modifier: Modifier = Modifier,
+    navController: NavHostController
 ) {
-    val context = LocalContext.current
-
     NavHost(
+        modifier = modifier,
         navController = navController,
-        startDestination = context.getString(RandomNavigation.RangeRoute.route)
+        startDestination = RandomNavigation.RangeRoute.route
     ) {
-        rangeDestination(context = context)
-        listDestination(context = context)
-        diceDestination(context = context)
+        rangeDestination(navController = navController)
+        listDestination(navController = navController)
+        diceDestination(navController = navController)
     }
 }
