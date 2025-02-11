@@ -22,6 +22,7 @@ import com.immortalidiot.randomizer.ui.components.field.UnderlineEmptyText
 import com.immortalidiot.randomizer.ui.theme.RandomizerTheme
 
 @Composable
+// TODO: add inclusive/exclusive checkboxes
 fun RangeScreen(modifier: Modifier = Modifier) {
     val resultStyle = MaterialTheme.typography.headlineSmall
     val result: String = Long.MAX_VALUE.toString() // TODO: replace with view model
