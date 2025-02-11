@@ -3,4 +3,8 @@
     <string name="range">Число</string>
     <string name="list">Список</string>
     <string name="dice">Кости</string>
+    <string name="first_number">Введите первое число</string>
+    <string name="second_number">Введите второе число</string>
+    <string name="generate_btn">Сгенерировать</string>
+    <string name="result">Результат</string>
 </resources>

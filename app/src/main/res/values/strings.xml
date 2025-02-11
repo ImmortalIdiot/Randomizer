@@ -3,4 +3,8 @@
     <string name="range">Number</string>
     <string name="list">List</string>
     <string name="dice">Dice</string>
+    <string name="first_number">Enter the first number</string>
+    <string name="second_number">Enter the second number</string>
+    <string name="generate_btn">Generate</string>
+    <string name="result">Result</string>
 </resources>
