@@ -21,5 +21,6 @@ fun RandomNavGraph(
         rangeDestination(navController = navController)
         listDestination(navController = navController)
         diceDestination(navController = navController)
+        // TODO: add "heads and tails"
     }
 }
