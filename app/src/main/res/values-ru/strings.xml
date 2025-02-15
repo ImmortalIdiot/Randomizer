@@ -7,4 +7,7 @@
     <string name="second_number">Введите второе число</string>
     <string name="generate_btn">Сгенерировать</string>
     <string name="result">Результат</string>
+    <string name="history">История</string>
+    <string name="settings">Настройки</string>
+    <string name="application_info">О приложении</string>
 </resources>
