@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -20,14 +22,23 @@ import com.immortalidiot.randomizer.ui.components.button.GenerateButton
 import com.immortalidiot.randomizer.ui.components.field.NumberInputField
 import com.immortalidiot.randomizer.ui.components.field.UnderlineEmptyText
 import com.immortalidiot.randomizer.ui.theme.RandomizerTheme
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 // TODO: add inclusive/exclusive checkboxes
-fun RangeScreen(modifier: Modifier = Modifier) {
+fun RangeScreen(
+    modifier: Modifier = Modifier,
+    viewModel: RangeScreenViewModel
+) {
     val resultStyle = MaterialTheme.typography.headlineSmall
-    val result: String = Long.MAX_VALUE.toString() // TODO: replace with view model
 
-    Box (
+    val uiState by viewModel.uiState.collectAsState()
+
+    val firstField by viewModel.firstField.collectAsState()
+    val secondField by viewModel.secondField.collectAsState()
+    val result by viewModel.result.collectAsState()
+
+    Box(
         modifier = modifier
             .fillMaxSize()
             .padding(32.dp),
@@ -37,14 +48,18 @@ fun RangeScreen(modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             NumberInputField(
-                value = "",
-                onValueChange = {},
+                value = firstField,
+                onValueChange = {
+                    viewModel.updateFirstField(newValue = it)
+                },
                 placeholderText = stringResource(R.string.first_number)
             )
             ScreenSpacer()
             NumberInputField(
-                value = "",
-                onValueChange = {},
+                value = secondField,
+                onValueChange = {
+                    viewModel.updateSecondField(newValue = it)
+                },
                 placeholderText = stringResource(R.string.second_number)
             )
             ScreenSpacer()
@@ -59,18 +74,28 @@ fun RangeScreen(modifier: Modifier = Modifier) {
             )
         }
 
-        GenerateButton(modifier = Modifier.align(Alignment.BottomCenter))
+        GenerateButton(
+            modifier = Modifier.align(Alignment.BottomCenter),
+            onClick = {
+                viewModel.generateRandomNumberInRange(
+                    firstValue =  firstField,
+                    secondValue = secondField
+                )
+            }
+        )
     }
 }
 
 @Composable
-private fun ScreenSpacer() { Spacer(modifier = Modifier.height(16.dp)) }
+private fun ScreenSpacer() {
+    Spacer(modifier = Modifier.height(16.dp))
+}
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun Preview() {
     RandomizerTheme {
-        RangeScreen()
+        RangeScreen(viewModel = koinViewModel())
     }
 }
