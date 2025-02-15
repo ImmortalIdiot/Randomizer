@@ -1,4 +1,4 @@
-package com.immortalidiot.randomizer.ui.components.navbar
+package com.immortalidiot.randomizer.ui.components.bar
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor

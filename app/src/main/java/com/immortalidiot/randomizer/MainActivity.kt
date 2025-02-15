@@ -10,7 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.immortalidiot.randomizer.ui.RandomNavGraph
-import com.immortalidiot.randomizer.ui.components.navbar.BottomNavigationBar
+import com.immortalidiot.randomizer.ui.components.bar.BottomNavigationBar
 import com.immortalidiot.randomizer.ui.theme.RandomizerTheme
 
 class MainActivity : ComponentActivity() {
