@@ -14,6 +14,9 @@ sealed class RandomNavigation(val route: String) {
     data object RangeRoute : RandomNavigation("range")
     data object ListRoute : RandomNavigation("list")
     data object DiceRoute : RandomNavigation("dice")
+    data object HistoryRoute : RandomNavigation("history")
+    data object SettingsRoute : RandomNavigation("settings")
+    data object ApplicationInfoRoute : RandomNavigation("about")
 }
 
 data class RandomDestination(
