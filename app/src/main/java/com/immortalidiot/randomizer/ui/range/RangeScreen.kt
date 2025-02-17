@@ -10,10 +10,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -21,15 +23,18 @@ import com.immortalidiot.randomizer.R
 import com.immortalidiot.randomizer.ui.components.button.GenerateButton
 import com.immortalidiot.randomizer.ui.components.field.NumberInputField
 import com.immortalidiot.randomizer.ui.components.field.UnderlineEmptyText
+import com.immortalidiot.randomizer.ui.components.snackbar.ErrorSnackbar
+import com.immortalidiot.randomizer.ui.components.snackbar.LocalSnackbarHostState
+import com.immortalidiot.randomizer.ui.components.snackbar.showMessage
 import com.immortalidiot.randomizer.ui.theme.RandomizerTheme
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-// TODO: add inclusive/exclusive checkboxes
 fun RangeScreen(
     modifier: Modifier = Modifier,
     viewModel: RangeScreenViewModel
 ) {
+    val context = LocalContext.current
     val resultStyle = MaterialTheme.typography.headlineSmall
 
     val uiState by viewModel.uiState.collectAsState()
@@ -38,13 +43,20 @@ fun RangeScreen(
     val secondField by viewModel.secondField.collectAsState()
     val result by viewModel.result.collectAsState()
 
+    val snackbarHostState = LocalSnackbarHostState.current
+
+    LaunchedEffect(uiState) {
+        if (uiState is RangeScreenUiState.Error) {
+            val toastText = (uiState as RangeScreenUiState.Error).errorMessage
+            snackbarHostState.showMessage(message = toastText)
+        }
+    }
+
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(32.dp),
+        modifier = modifier.fillMaxSize()
     ) {
         Column(
-            modifier = Modifier.align(Alignment.Center),
+            modifier = Modifier.align(Alignment.Center).padding(32.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             NumberInputField(
@@ -75,13 +87,18 @@ fun RangeScreen(
         }
 
         GenerateButton(
-            modifier = Modifier.align(Alignment.BottomCenter),
+            modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 32.dp),
             onClick = {
                 viewModel.generateRandomNumberInRange(
                     firstValue =  firstField,
-                    secondValue = secondField
+                    secondValue = secondField,
+                    context = context
                 )
             }
+        )
+        ErrorSnackbar(
+            snackbarHostState = snackbarHostState,
+            modifier = modifier.padding(horizontal = 16.dp)
         )
     }
 }

@@ -1,12 +1,16 @@
 package com.immortalidiot.randomizer.ui.range
 
+import android.content.Context
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.immortalidiot.randomizer.R
 import com.immortalidiot.randomizer.data.Content
 import com.immortalidiot.randomizer.data.ContentType
 import com.immortalidiot.randomizer.data.history.History
 import com.immortalidiot.randomizer.data.history.HistoryRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -42,28 +46,44 @@ class RangeScreenViewModel(
 
     fun generateRandomNumberInRange(
         firstValue: String?,
-        secondValue: String?
+        secondValue: String?,
+        context: Context
     ) {
         val first = firstValue?.toLongOrNull() ?: 1L
         val second = secondValue?.toLongOrNull() ?: 2L
 
-        validateInputs(first, second)
+        if (!validateInputs(first, second, context)) {
+
+            return
+        }
+
         viewModelScope.launch {
             _uiState.emit(value = RangeScreenUiState.Generated)
             _result.emit((first..second).random().toString())
-            saveToHistory(first = first, second = second, result = _result.value)
+            //saveToHistory(first = first, second = second, result = _result.value)
         }
     }
 
-    private fun validateInputs(first: Long, second: Long) {
-        if (first > second) {
+    private fun validateInputs(first: Long, second: Long, context: Context): Boolean {
+        return if (first > second) {
             viewModelScope.launch {
-                _uiState.emit(value = RangeScreenUiState.Error)
+                resetUiStateWithDelay(3000)
+                _uiState.emit(
+                    value = RangeScreenUiState.Error(
+                        errorMessage = context.getString(R.string.range_values_error)
+                    )
+                )
             }
+            false
         } else {
-            viewModelScope.launch {
-                _uiState.emit(value = RangeScreenUiState.Generated)
-            }
+            true
+        }
+    }
+
+    private fun resetUiStateWithDelay(delay: Long = 0L) {
+        viewModelScope.launch {
+            delay(delay)
+            _uiState.emit(value = RangeScreenUiState.Init)
         }
     }
 
@@ -89,5 +109,5 @@ class RangeScreenViewModel(
 sealed interface RangeScreenUiState {
     data object Init : RangeScreenUiState
     data object Generated : RangeScreenUiState
-    data object Error : RangeScreenUiState
+    data class Error(val errorMessage: String) : RangeScreenUiState
 }
