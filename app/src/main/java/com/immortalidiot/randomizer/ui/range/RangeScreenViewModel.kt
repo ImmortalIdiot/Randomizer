@@ -2,12 +2,10 @@ package com.immortalidiot.randomizer.ui.range
 
 import android.content.Context
 import androidx.compose.runtime.Immutable
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.immortalidiot.randomizer.R
 import com.immortalidiot.randomizer.data.Content
-import com.immortalidiot.randomizer.data.ContentType
 import com.immortalidiot.randomizer.data.history.History
 import com.immortalidiot.randomizer.data.history.HistoryRepository
 import kotlinx.coroutines.delay
@@ -92,15 +90,15 @@ class RangeScreenViewModel(
         second: Long,
         result: String
     ) {
-        val content = Content.Range(first = first, second = second)
+            val content = Content.Range(first = first, second = second)
 
-        val history = History(
-            time = LocalDateTime.now(),
-            contentType = ContentType.RANGE,
-            content = content,
-            result = result
-        )
-
+            val history = History(
+                time = LocalDateTime.now(),
+                contentType = "Range",
+                content = content,
+                result = result
+            )
+        // TODO: fix save history, migrate database, separate to another class
         historyRepository.saveHistory(history = history)
     }
 }
