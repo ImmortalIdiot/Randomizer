@@ -10,5 +10,5 @@
     <string name="history">История</string>
     <string name="settings">Настройки</string>
     <string name="application_info">О приложении</string>
-    <string name="range_values_error">First number must be less than second</string>
+    <string name="range_values_error">Первое число должно быть меньше второго</string>
 </resources>
