@@ -31,15 +31,11 @@ class RangeScreenViewModel(
     val result = _result.asStateFlow()
 
     fun updateFirstField(newValue: String) {
-        viewModelScope.launch {
-            _firstField.emit(value = newValue)
-        }
+        _firstField.value = newValue
     }
 
     fun updateSecondField(newValue: String) {
-        viewModelScope.launch {
-            _secondField.emit(value = newValue)
-        }
+        _secondField.value = newValue
     }
 
     fun generateRandomNumberInRange(
@@ -51,13 +47,12 @@ class RangeScreenViewModel(
         val second = secondValue?.toLongOrNull() ?: 2L
 
         if (!validateInputs(first, second, context)) {
-
             return
         }
 
         viewModelScope.launch {
-            _uiState.emit(value = RangeScreenUiState.Generated)
-            _result.emit((first..second).random().toString())
+            _uiState.value = RangeScreenUiState.Generated
+            _result.value = (first..second).random().toString()
             //saveToHistory(first = first, second = second, result = _result.value)
         }
     }
@@ -66,10 +61,8 @@ class RangeScreenViewModel(
         return if (first > second) {
             viewModelScope.launch {
                 resetUiStateWithDelay(3000)
-                _uiState.emit(
-                    value = RangeScreenUiState.Error(
-                        errorMessage = context.getString(R.string.range_values_error)
-                    )
+                _uiState.value = RangeScreenUiState.Error(
+                    errorMessage = context.getString(R.string.range_values_error)
                 )
             }
             false
@@ -81,7 +74,7 @@ class RangeScreenViewModel(
     private fun resetUiStateWithDelay(delay: Long = 0L) {
         viewModelScope.launch {
             delay(delay)
-            _uiState.emit(value = RangeScreenUiState.Init)
+            _uiState.value = RangeScreenUiState.Init
         }
     }
 
@@ -90,14 +83,14 @@ class RangeScreenViewModel(
         second: Long,
         result: String
     ) {
-            val content = Content.Range(first = first, second = second)
+        val content = Content.Range(first = first, second = second)
 
-            val history = History(
-                time = LocalDateTime.now(),
-                contentType = "Range",
-                content = content,
-                result = result
-            )
+        val history = History(
+            time = LocalDateTime.now(),
+            contentType = "Range",
+            content = content,
+            result = result
+        )
         // TODO: fix save history, migrate database, separate to another class
         historyRepository.saveHistory(history = history)
     }

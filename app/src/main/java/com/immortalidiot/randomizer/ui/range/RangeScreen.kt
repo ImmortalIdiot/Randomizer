@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -56,21 +57,27 @@ fun RangeScreen(
         modifier = modifier.fillMaxSize()
     ) {
         Column(
-            modifier = Modifier.align(Alignment.Center).padding(32.dp),
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(32.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             NumberInputField(
                 value = firstField,
-                onValueChange = {
-                    viewModel.updateFirstField(newValue = it)
+                onValueChange = remember {
+                    {
+                        viewModel.updateFirstField(newValue = it)
+                    }
                 },
                 placeholderText = stringResource(R.string.first_number)
             )
             ScreenSpacer()
             NumberInputField(
                 value = secondField,
-                onValueChange = {
-                    viewModel.updateSecondField(newValue = it)
+                onValueChange = remember {
+                    {
+                        viewModel.updateSecondField(newValue = it)
+                    }
                 },
                 placeholderText = stringResource(R.string.second_number)
             )
@@ -87,13 +94,17 @@ fun RangeScreen(
         }
 
         GenerateButton(
-            modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 32.dp),
-            onClick = {
-                viewModel.generateRandomNumberInRange(
-                    firstValue =  firstField,
-                    secondValue = secondField,
-                    context = context
-                )
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 32.dp),
+            onClick = remember {
+                {
+                    viewModel.generateRandomNumberInRange(
+                        firstValue = firstField,
+                        secondValue = secondField,
+                        context = context
+                    )
+                }
             }
         )
         ErrorSnackbar(
