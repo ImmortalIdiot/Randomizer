@@ -1,10 +1,11 @@
 package com.immortalidiot.randomizer.ui.range
 
-import android.content.Context
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.immortalidiot.randomizer.R
+import com.immortalidiot.randomizer.core.ResourceProvider
+import com.immortalidiot.randomizer.core.UI_STATE_DELAY
 import com.immortalidiot.randomizer.data.Content
 import com.immortalidiot.randomizer.data.history.History
 import com.immortalidiot.randomizer.data.history.HistoryRepository
@@ -16,7 +17,8 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 class RangeScreenViewModel(
-    private val historyRepository: HistoryRepository
+    private val historyRepository: HistoryRepository,
+    private val resourceProvider: ResourceProvider
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<RangeScreenUiState>(RangeScreenUiState.Init)
     val uiState: StateFlow<RangeScreenUiState> = _uiState.asStateFlow()
@@ -41,12 +43,11 @@ class RangeScreenViewModel(
     fun generateRandomNumberInRange(
         firstValue: String?,
         secondValue: String?,
-        context: Context
     ) {
         val first = firstValue?.toLongOrNull() ?: 1L
         val second = secondValue?.toLongOrNull() ?: 2L
 
-        if (!validateInputs(first, second, context)) {
+        if (!validateInputs(first, second)) {
             return
         }
 
@@ -57,24 +58,17 @@ class RangeScreenViewModel(
         }
     }
 
-    private fun validateInputs(first: Long, second: Long, context: Context): Boolean {
+    private fun validateInputs(first: Long, second: Long): Boolean {
         return if (first > second) {
             viewModelScope.launch {
-                resetUiStateWithDelay(3000)
+                resetUiStateWithDelay()
                 _uiState.value = RangeScreenUiState.Error(
-                    errorMessage = context.getString(R.string.range_values_error)
+                    errorMessage = resourceProvider.getString(R.string.range_values_error)
                 )
             }
             false
         } else {
             true
-        }
-    }
-
-    private fun resetUiStateWithDelay(delay: Long = 0L) {
-        viewModelScope.launch {
-            delay(delay)
-            _uiState.value = RangeScreenUiState.Init
         }
     }
 
@@ -93,6 +87,13 @@ class RangeScreenViewModel(
         )
         // TODO: fix save history, migrate database, separate to another class
         historyRepository.saveHistory(history = history)
+    }
+
+    private fun resetUiStateWithDelay() {
+        viewModelScope.launch {
+            delay(UI_STATE_DELAY)
+            _uiState.value = RangeScreenUiState.Init
+        }
     }
 }
 

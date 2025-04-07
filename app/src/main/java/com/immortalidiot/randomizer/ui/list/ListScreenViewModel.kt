@@ -1,10 +1,11 @@
 package com.immortalidiot.randomizer.ui.list
 
-import android.content.Context
 import androidx.compose.ui.focus.FocusRequester
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.immortalidiot.randomizer.R
+import com.immortalidiot.randomizer.core.ResourceProvider
+import com.immortalidiot.randomizer.core.UI_STATE_DELAY
 import com.immortalidiot.randomizer.data.history.HistoryRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
 
 class ListScreenViewModel(
     private val historyRepository: HistoryRepository,
-    private val context: Context
+    private val resourceProvider: ResourceProvider
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<ListScreenUiState>(ListScreenUiState.Init)
     val uiState: StateFlow<ListScreenUiState> = _uiState.asStateFlow()
@@ -26,7 +27,7 @@ class ListScreenViewModel(
     private val _result = MutableStateFlow("")
     val result = _result.asStateFlow()
 
-    private val _focusRequesters = MutableStateFlow(listOf(FocusRequester() , FocusRequester()))
+    private val _focusRequesters = MutableStateFlow(listOf(FocusRequester(), FocusRequester()))
     val focusRequesters: StateFlow<List<FocusRequester>> = _focusRequesters.asStateFlow()
 
     fun updateTextField(index: Int, value: String) {
@@ -55,15 +56,17 @@ class ListScreenViewModel(
             }
         } else {
             viewModelScope.launch {
-                _uiState.value = ListScreenUiState.Error(context.getString(R.string.list_error))
+                _uiState.value = ListScreenUiState.Error(
+                    resourceProvider.getString(R.string.list_error)
+                )
                 resetUiState()
             }
         }
     }
 
-    private fun resetUiState()  {
+    private fun resetUiState() {
         viewModelScope.launch {
-            delay(3000L)
+            delay(UI_STATE_DELAY)
             _uiState.value = ListScreenUiState.Init
         }
     }

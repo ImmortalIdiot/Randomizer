@@ -16,7 +16,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,7 +34,6 @@ fun RangeScreen(
     modifier: Modifier = Modifier,
     viewModel: RangeScreenViewModel
 ) {
-    val context = LocalContext.current
     val resultStyle = MaterialTheme.typography.headlineSmall
 
     val uiState by viewModel.uiState.collectAsState()
@@ -102,7 +100,6 @@ fun RangeScreen(
                     viewModel.generateRandomNumberInRange(
                         firstValue = firstField,
                         secondValue = secondField,
-                        context = context
                     )
                 }
             }
