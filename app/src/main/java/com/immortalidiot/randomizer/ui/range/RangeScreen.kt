@@ -62,21 +62,13 @@ fun RangeScreen(
         ) {
             NumberInputField(
                 value = firstField,
-                onValueChange = remember {
-                    {
-                        viewModel.updateFirstField(newValue = it)
-                    }
-                },
+                onValueChange = { viewModel.updateFirstField(newValue = it) },
                 placeholderText = stringResource(R.string.first_number)
             )
             ScreenSpacer()
             NumberInputField(
                 value = secondField,
-                onValueChange = remember {
-                    {
-                        viewModel.updateSecondField(newValue = it)
-                    }
-                },
+                onValueChange = { viewModel.updateSecondField(newValue = it) },
                 placeholderText = stringResource(R.string.second_number)
             )
             ScreenSpacer()

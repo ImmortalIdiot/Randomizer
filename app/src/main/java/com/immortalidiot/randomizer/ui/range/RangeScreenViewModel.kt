@@ -44,8 +44,11 @@ class RangeScreenViewModel(
         firstValue: String?,
         secondValue: String?,
     ) {
-        val first = firstValue?.toLongOrNull() ?: 1L
-        val second = secondValue?.toLongOrNull() ?: 2L
+        val first = firstValue?.takeIf { it.isNotEmpty() }?.toLongOrNull() ?: 1L
+        val second = secondValue?.takeIf { it.isNotEmpty() }?.toLongOrNull() ?: 2L
+
+        _firstField.value = first.toString()
+        _secondField.value = second.toString()
 
         if (!validateInputs(first, second)) {
             return
