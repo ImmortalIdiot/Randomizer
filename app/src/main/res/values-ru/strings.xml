@@ -11,4 +11,6 @@
     <string name="settings">Настройки</string>
     <string name="application_info">О приложении</string>
     <string name="range_values_error">Первое число должно быть меньше второго</string>
+    <string name="item">Элемент </string>
+    <string name="list_error">Заполните хотя бы 2 поля</string>
 </resources>

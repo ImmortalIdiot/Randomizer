@@ -11,4 +11,6 @@
     <string name="settings">Settings</string>
     <string name="application_info">About</string>
     <string name="range_values_error">The first number must be less than the second number</string>
+    <string name="item">Item </string>
+    <string name="list_error">Fill 2 fields or more</string>
 </resources>

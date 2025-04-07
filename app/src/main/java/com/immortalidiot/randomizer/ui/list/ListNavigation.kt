@@ -1,14 +1,13 @@
 package com.immortalidiot.randomizer.ui.list
 
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.immortalidiot.randomizer.ui.RandomNavigation
+import org.koin.androidx.compose.koinViewModel
 
-fun NavGraphBuilder.listDestination(
-    navController: NavHostController
-) {
+fun NavGraphBuilder.listDestination() {
     composable(route = RandomNavigation.ListRoute.route) {
-        ListScreen(navController = navController)
+        val viewModel: ListScreenViewModel = koinViewModel()
+        ListScreen(viewModel = viewModel)
     }
 }

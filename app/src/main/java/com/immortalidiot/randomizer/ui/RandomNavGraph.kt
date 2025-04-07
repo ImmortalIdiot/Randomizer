@@ -22,7 +22,7 @@ fun RandomNavGraph(
         startDestination = RandomNavigation.RangeRoute.route
     ) {
         rangeDestination()
-        listDestination(navController = navController)
+        listDestination()
         diceDestination(navController = navController)
         // TODO: add "heads and tails"
         historyDestination()
