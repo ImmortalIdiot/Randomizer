@@ -28,4 +28,10 @@ object Converters {
     fun toContent(jsonString: String): Content {
         return json.decodeFromString(jsonString)
     }
+
+    @TypeConverter
+    fun fromContentType(contentType: ContentType): String = contentType.name
+
+    @TypeConverter
+    fun toContentType(value: String): ContentType = ContentType.valueOf(value)
 }
