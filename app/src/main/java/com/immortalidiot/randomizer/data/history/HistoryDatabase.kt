@@ -10,6 +10,7 @@ import com.immortalidiot.randomizer.data.Converters
 @Database(
     version = 2,
     entities =[History::class],
+    exportSchema = true
 )
 @TypeConverters(Converters::class)
 abstract class HistoryDatabase : RoomDatabase() {

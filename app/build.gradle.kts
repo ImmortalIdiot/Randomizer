@@ -10,6 +10,10 @@ android {
     namespace = "com.immortalidiot.randomizer"
     compileSdk = 35
 
+    ksp {
+        arg("room.schemaLocation", "$projectDir/schemas")
+    }
+
     defaultConfig {
         applicationId = "com.immortalidiot.randomizer"
         minSdk = 26
