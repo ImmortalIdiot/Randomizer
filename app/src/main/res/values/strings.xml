@@ -13,4 +13,8 @@
     <string name="range_values_error">The first number must be less than the second number</string>
     <string name="item">Item </string>
     <string name="list_error">Fill 2 fields or more</string>
+
+    <string name="history_type">Type:</string>
+    <string name="history_content">Content:</string>
+    <string name="history_result">Result:</string>
 </resources>

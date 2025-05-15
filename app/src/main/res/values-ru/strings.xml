@@ -13,4 +13,8 @@
     <string name="range_values_error">Первое число должно быть меньше второго</string>
     <string name="item">Элемент </string>
     <string name="list_error">Заполните хотя бы 2 поля</string>
+
+    <string name="history_type">Тип:</string>
+    <string name="history_content">Содержимое:</string>
+    <string name="history_result">Результат:</string>
 </resources>

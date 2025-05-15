@@ -3,6 +3,7 @@ package com.immortalidiot.randomizer.data.history
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface HistoryRepository {
@@ -10,8 +11,8 @@ interface HistoryRepository {
     @Insert
     suspend fun saveHistory(history: History)
 
-    @Query("SELECT * FROM HISTORY")
-    suspend fun getAllHistory(): List<History>
+    @Query("SELECT * FROM HISTORY ORDER BY time DESC")
+    fun getAllHistory(): Flow<List<History>>
 
     @Query("DELETE FROM History")
     suspend fun deleteAllHistory()
