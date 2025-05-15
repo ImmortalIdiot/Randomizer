@@ -56,6 +56,8 @@ class HistoryDatabaseTest {
         assertEquals(history.result, saved.result)
         assertEquals(history.contentType, saved.contentType)
         assertEquals(history.content, saved.content)
+
+        @Suppress("USELESS_IS_CHECK")
         assert(saved.time is LocalDateTime)
     }
 }
