@@ -1,13 +1,13 @@
 package com.immortalidiot.randomizer.data.history
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Upsert
 
 @Dao
 interface HistoryRepository {
 
-    @Upsert
+    @Insert
     suspend fun saveHistory(history: History)
 
     @Query("SELECT * FROM HISTORY")
