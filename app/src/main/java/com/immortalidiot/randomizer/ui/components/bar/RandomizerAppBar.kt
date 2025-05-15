@@ -58,6 +58,7 @@ fun RandomizerAppBar(
                     contentDescription = ""
                 )
 
+                // TODO: close drop down menu after clicks on item
                 DropdownMenu(
                     modifier = Modifier
                         .width(160.dp)
