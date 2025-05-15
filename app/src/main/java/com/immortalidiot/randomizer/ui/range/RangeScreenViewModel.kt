@@ -7,6 +7,7 @@ import com.immortalidiot.randomizer.R
 import com.immortalidiot.randomizer.core.ResourceProvider
 import com.immortalidiot.randomizer.core.UI_STATE_DELAY
 import com.immortalidiot.randomizer.data.Content
+import com.immortalidiot.randomizer.data.ContentType
 import com.immortalidiot.randomizer.data.history.History
 import com.immortalidiot.randomizer.data.history.HistoryRepository
 import kotlinx.coroutines.delay
@@ -57,7 +58,7 @@ class RangeScreenViewModel(
         viewModelScope.launch {
             _uiState.value = RangeScreenUiState.Generated
             _result.value = (first..second).random().toString()
-            //saveToHistory(first = first, second = second, result = _result.value)
+            saveToHistory(first = first, second = second, result = _result.value)
         }
     }
 
@@ -84,11 +85,10 @@ class RangeScreenViewModel(
 
         val history = History(
             time = LocalDateTime.now(),
-            contentType = "Range",
+            contentType = ContentType.RANGE,
             content = content,
             result = result
         )
-        // TODO: fix save history, migrate database, separate to another class
         historyRepository.saveHistory(history = history)
     }
 
