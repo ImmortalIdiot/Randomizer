@@ -7,6 +7,7 @@ import com.immortalidiot.randomizer.data.ContentType
 import com.immortalidiot.randomizer.data.history.History
 import com.immortalidiot.randomizer.data.history.HistoryDatabase
 import com.immortalidiot.randomizer.data.history.HistoryRepository
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -48,7 +49,7 @@ class HistoryDatabaseTest {
 
         historyDao.saveHistory(history)
 
-        val allHistory = historyDao.getAllHistory()
+        val allHistory = historyDao.getAllHistory().first()
         assertEquals(1, allHistory.size)
         val saved = allHistory.first()
 
