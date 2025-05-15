@@ -9,8 +9,17 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.immortalidiot.randomizer.R
 
+object Routes {
+    val RANGE_ROUTE = RandomNavigation.RangeRoute.route
+    val LIST_ROUTE = RandomNavigation.ListRoute.route
+    val DICE_ROUTE = RandomNavigation.DiceRoute.route
+    val HISTORY_ROUTE = RandomNavigation.HistoryRoute.route
+    val SETTINGS_ROUTE = RandomNavigation.SettingsRoute.route
+    val APPLICATION_INFO_ROUTE = RandomNavigation.ApplicationInfoRoute.route
+}
+
 @Immutable
-sealed class RandomNavigation(val route: String) {
+private sealed class RandomNavigation(val route: String) {
     data object RangeRoute : RandomNavigation("range")
     data object ListRoute : RandomNavigation("list")
     data object DiceRoute : RandomNavigation("dice")

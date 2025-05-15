@@ -31,20 +31,21 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.immortalidiot.randomizer.R
 import com.immortalidiot.randomizer.ui.RandomNavGraph
+import com.immortalidiot.randomizer.ui.Routes
 import com.immortalidiot.randomizer.ui.theme.RandomizerTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RandomizerAppBar(
+    navController: NavHostController,
     isExpanded: Boolean,
     onMenuClick: () -> Unit = {},
     onDismissMenu: () -> Unit = {},
-    onHistory: () -> Unit = {},
-    onSettings: () -> Unit = {},
-    onApplicationInfo: () -> Unit = {}
 ) {
     TopAppBar(
         title = {},
@@ -71,7 +72,9 @@ fun RandomizerAppBar(
                                 title = stringResource(R.string.history)
                             )
                         },
-                        onClick = onHistory
+                        onClick = {
+                            navController.navigateSingleTopRestoreState(Routes.HISTORY_ROUTE)
+                        }
                     )
                     DropdownMenuItem(
                         text = {
@@ -80,7 +83,9 @@ fun RandomizerAppBar(
                                 title = stringResource(R.string.settings)
                             )
                         },
-                        onClick = onSettings
+                        onClick = {
+                            navController.navigateSingleTopRestoreState(Routes.SETTINGS_ROUTE)
+                        }
                     )
                     DropdownMenuItem(
                         text = {
@@ -89,12 +94,24 @@ fun RandomizerAppBar(
                                 title = stringResource(R.string.application_info)
                             )
                         },
-                        onClick = onApplicationInfo
+                        onClick = {
+                            navController.navigateSingleTopRestoreState(Routes.APPLICATION_INFO_ROUTE)
+                        }
                     )
                 }
             }
         }
     )
+}
+
+private fun NavController.navigateSingleTopRestoreState(route: String) {
+    navigate(route) {
+        popUpTo(graph.startDestinationId) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
 }
 
 @Composable
@@ -124,6 +141,7 @@ private fun AppBarPreview() {
         Scaffold(
             topBar = {
                 RandomizerAppBar(
+                    navController = rememberNavController(),
                     isExpanded = expanded.value,
                     onMenuClick = { expanded.value = true },
                     onDismissMenu = { expanded.value = false }

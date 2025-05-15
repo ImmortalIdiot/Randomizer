@@ -3,18 +3,16 @@ package com.immortalidiot.randomizer.ui.settings
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.immortalidiot.randomizer.ui.RandomNavigation
-
-private val SETTINGS_ROUTE = RandomNavigation.SettingsRoute.route
+import com.immortalidiot.randomizer.ui.Routes
 
 fun NavGraphBuilder.settingsDestination() {
-    composable(route = SETTINGS_ROUTE) {
+    composable(route = Routes.SETTINGS_ROUTE) {
         SettingsScreen()
     }
 }
 
 fun NavController.navigateToSettings() {
-    navigate(route = SETTINGS_ROUTE) {
+    navigate(route = Routes.SETTINGS_ROUTE) {
         launchSingleTop = true
     }
 }

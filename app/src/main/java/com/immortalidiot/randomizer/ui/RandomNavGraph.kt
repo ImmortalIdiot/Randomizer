@@ -19,12 +19,11 @@ fun RandomNavGraph(
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = RandomNavigation.RangeRoute.route
+        startDestination = Routes.RANGE_ROUTE
     ) {
         rangeDestination()
         listDestination()
         diceDestination(navController = navController)
-        // TODO: add "heads and tails"
         historyDestination()
         settingsDestination()
         aboutDestination()
