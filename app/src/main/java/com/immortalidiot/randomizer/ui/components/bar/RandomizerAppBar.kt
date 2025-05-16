@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -48,7 +49,13 @@ fun RandomizerAppBar(
     onDismissMenu: () -> Unit = {},
 ) {
     TopAppBar(
-        title = {},
+        title = {
+            Text(
+                modifier = Modifier.padding(start = 16.dp),
+                text = stringResource(R.string.app_name),
+                fontWeight = FontWeight.SemiBold
+            )
+        },
         actions = {
             IconButton(
                 onClick = onMenuClick
