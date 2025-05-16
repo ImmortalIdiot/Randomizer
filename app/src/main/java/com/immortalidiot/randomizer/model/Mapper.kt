@@ -30,13 +30,7 @@ object Mapper {
             time = model.time,
             contentType = model.contentType,
             content = when {
-                model.content.size == 2 -> {
-                    val first = model.content[0].toLongOrNull()
-                    val second = model.content[1].toLongOrNull()
-
-                    if (first != null && second != null) { Content.Range(first, second) }
-                    else { Content.ContentList(model.content) }
-                }
+                model.content.size == 2 -> { Content.Range(model.content[0].toLong(), model.content[1].toLong()) }
 
                 model.content == listOf(DICE_CONTENT_STRING) -> Content.Dice
 
