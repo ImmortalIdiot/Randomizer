@@ -6,13 +6,17 @@ import androidx.lifecycle.viewModelScope
 import com.immortalidiot.randomizer.R
 import com.immortalidiot.randomizer.core.ResourceProvider
 import com.immortalidiot.randomizer.core.UI_STATE_DELAY
+import com.immortalidiot.randomizer.data.ContentType
 import com.immortalidiot.randomizer.data.history.HistoryRepository
+import com.immortalidiot.randomizer.model.HistoryModel
+import com.immortalidiot.randomizer.model.Mapper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 class ListScreenViewModel(
     private val historyRepository: HistoryRepository,
@@ -53,6 +57,7 @@ class ListScreenViewModel(
         if (size >= 2) {
             viewModelScope.launch {
                 _result.value = notEmptyElements.random()
+                saveToHistory(notEmptyElements, _result.value)
             }
         } else {
             viewModelScope.launch {
@@ -62,6 +67,16 @@ class ListScreenViewModel(
                 resetUiState()
             }
         }
+    }
+
+    private suspend fun saveToHistory(content: List<String>, result: String) {
+        val history = HistoryModel(
+            time = LocalDateTime.now(),
+            contentType = ContentType.LIST,
+            content = content,
+            result = result
+        )
+        historyRepository.saveHistory(Mapper.toEntity(history))
     }
 
     private fun resetUiState() {
