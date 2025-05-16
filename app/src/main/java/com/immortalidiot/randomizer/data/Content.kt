@@ -12,7 +12,7 @@ sealed class Content {
     data class ContentList(val items: List<String>) : Content()
 
     @Serializable
-    data class Dice(val result: Long) : Content()
+    data object Dice : Content()
 }
 
 enum class ContentType {

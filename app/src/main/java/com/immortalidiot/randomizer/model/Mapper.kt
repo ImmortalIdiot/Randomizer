@@ -4,15 +4,17 @@ import com.immortalidiot.randomizer.data.Content
 import com.immortalidiot.randomizer.data.history.History
 
 object Mapper {
+    private const val DICE_CONTENT_STRING = "1..6"
+
     fun toModel(entity: History): HistoryModel {
-        val modelContent: List<String> = when (entity.content) {
+        val modelContent: List<String> = when (val content = entity.content) {
             is Content.Range -> listOf(
-                entity.content.first.toString(),
-                entity.content.second.toString()
+                content.first.toString(),
+                content.second.toString()
             )
 
-            is Content.ContentList -> entity.content.items
-            is Content.Dice -> listOf(entity.content.result.toString())
+            is Content.ContentList -> content.items
+            is Content.Dice -> listOf(DICE_CONTENT_STRING)
         }
 
         return HistoryModel(
@@ -27,12 +29,16 @@ object Mapper {
         return History(
             time = model.time,
             contentType = model.contentType,
-            content = when (model.content.size) {
-                1 -> Content.Dice(model.content[0].toLong())
-                2 -> Content.Range(
-                    first = model.content[0].toLong(),
-                    second = model.content[1].toLong()
-                )
+            content = when {
+                model.content.size == 2 -> {
+                    val first = model.content[0].toLongOrNull()
+                    val second = model.content[1].toLongOrNull()
+
+                    if (first != null && second != null) { Content.Range(first, second) }
+                    else { Content.ContentList(model.content) }
+                }
+
+                model.content == listOf(DICE_CONTENT_STRING) -> Content.Dice
 
                 else -> Content.ContentList(model.content)
             },
