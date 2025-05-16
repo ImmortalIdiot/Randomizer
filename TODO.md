@@ -4,3 +4,4 @@ Example: "Content: 1, 2" instead of "Content: Range(first=1, second=2)"
 3. Hide DropDownMenu in TopAppBar when the user moves to another screen
 4. Add screen states to the history screen and the history screen viewmodel. 
 Show loading indicator if history data is loading
+5. Localize content type in HistoryScreen
