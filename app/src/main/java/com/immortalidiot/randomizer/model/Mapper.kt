@@ -28,13 +28,13 @@ object Mapper {
             time = model.time,
             contentType = model.contentType,
             content = when (model.content.size) {
-                1 -> Content.ContentList(model.content)
+                1 -> Content.Dice(model.content[0].toLong())
                 2 -> Content.Range(
                     first = model.content[0].toLong(),
                     second = model.content[1].toLong()
                 )
 
-                else -> Content.Dice(model.content[0].toLong())
+                else -> Content.ContentList(model.content)
             },
             result = model.result
         )
