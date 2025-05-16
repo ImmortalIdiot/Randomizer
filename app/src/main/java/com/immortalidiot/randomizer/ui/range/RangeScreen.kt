@@ -89,10 +89,7 @@ fun RangeScreen(
                 .padding(bottom = 32.dp),
             onClick = remember {
                 {
-                    viewModel.generateRandomNumberInRange(
-                        firstValue = firstField,
-                        secondValue = secondField,
-                    )
+                    viewModel.generateRandomNumberInRange()
                 }
             }
         )

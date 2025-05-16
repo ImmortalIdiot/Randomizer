@@ -17,6 +17,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
+private const val FIRST_VALUE_DEFAULT = "1"
+private const val SECOND_VALUE_DEFAULT = "2"
+
 class RangeScreenViewModel(
     private val historyRepository: HistoryRepository,
     private val resourceProvider: ResourceProvider
@@ -41,42 +44,40 @@ class RangeScreenViewModel(
         _secondField.value = newValue
     }
 
-    fun generateRandomNumberInRange(
-        firstValue: String?,
-        secondValue: String?,
-    ) {
-        val first = firstValue?.takeIf { it.isNotEmpty() }?.toLongOrNull() ?: 1L
-        val second = secondValue?.takeIf { it.isNotEmpty() }?.toLongOrNull() ?: 2L
+    fun generateRandomNumberInRange() {
+        if (_firstField.value.isEmpty() && _secondField.value.isEmpty()) {
+            _firstField.value = FIRST_VALUE_DEFAULT
+            _secondField.value = SECOND_VALUE_DEFAULT
+        }
 
-        _firstField.value = first.toString()
-        _secondField.value = second.toString()
+        val first = _firstField.value.toLongOrNull()
+        val second = _secondField.value.toLongOrNull()
 
-        if (!validateInputs(first, second)) {
+        val validationError = validateRange(first, second)
+        if (validationError != null) {
+            showError(validationError)
             return
         }
 
         viewModelScope.launch {
             _uiState.value = RangeScreenUiState.Generated
-            _result.value = (first..second).random().toString()
-            saveToHistory(
-                first = first.toString(),
-                second = second.toString(),
-                result = _result.value
-            )
+            _result.value = (first!!..second!!).random().toString()
+            saveToHistory(first.toString(), second.toString(), _result.value)
         }
     }
 
-    private fun validateInputs(first: Long, second: Long): Boolean {
-        return if (first > second) {
-            viewModelScope.launch {
-                resetUiStateWithDelay()
-                _uiState.value = RangeScreenUiState.Error(
-                    errorMessage = resourceProvider.getString(R.string.range_values_error)
-                )
-            }
-            false
-        } else {
-            true
+    private fun validateRange(first: Long?, second: Long?): String? {
+        if (first == null) { return resourceProvider.getString(R.string.first_number) }
+        if (second == null) { return resourceProvider.getString(R.string.second_number) }
+
+        return if (first > second) { resourceProvider.getString(R.string.range_values_error) }
+               else null
+    }
+
+    private fun showError(message: String) {
+        viewModelScope.launch {
+            resetUiStateWithDelay()
+            _uiState.value = RangeScreenUiState.Error(errorMessage = message)
         }
     }
 
