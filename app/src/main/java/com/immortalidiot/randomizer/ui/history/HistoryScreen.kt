@@ -23,7 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.immortalidiot.randomizer.R
-import com.immortalidiot.randomizer.model.HistoryModel
+import com.immortalidiot.randomizer.data.model.HistoryModel
 import java.time.format.DateTimeFormatter
 
 @Composable

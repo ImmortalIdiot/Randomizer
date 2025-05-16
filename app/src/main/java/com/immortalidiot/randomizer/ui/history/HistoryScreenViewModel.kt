@@ -3,8 +3,8 @@ package com.immortalidiot.randomizer.ui.history
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.immortalidiot.randomizer.data.history.HistoryRepository
-import com.immortalidiot.randomizer.model.HistoryModel
-import com.immortalidiot.randomizer.model.Mapper
+import com.immortalidiot.randomizer.data.model.HistoryModel
+import com.immortalidiot.randomizer.data.model.Mapper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

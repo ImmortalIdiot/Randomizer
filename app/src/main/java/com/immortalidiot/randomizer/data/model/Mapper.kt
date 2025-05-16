@@ -1,4 +1,4 @@
-package com.immortalidiot.randomizer.model
+package com.immortalidiot.randomizer.data.model
 
 import com.immortalidiot.randomizer.data.Content
 import com.immortalidiot.randomizer.data.history.History

@@ -8,8 +8,8 @@ import com.immortalidiot.randomizer.core.ResourceProvider
 import com.immortalidiot.randomizer.core.UI_STATE_DELAY
 import com.immortalidiot.randomizer.data.ContentType
 import com.immortalidiot.randomizer.data.history.HistoryRepository
-import com.immortalidiot.randomizer.model.HistoryModel
-import com.immortalidiot.randomizer.model.Mapper
+import com.immortalidiot.randomizer.data.model.HistoryModel
+import com.immortalidiot.randomizer.data.model.Mapper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
