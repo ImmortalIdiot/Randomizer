@@ -17,4 +17,6 @@
     <string name="history_type">Тип:</string>
     <string name="history_content">Содержимое:</string>
     <string name="history_result">Результат:</string>
+
+    <string name="to_generate">Нажмите \"Сгенерировать\"</string>
 </resources>

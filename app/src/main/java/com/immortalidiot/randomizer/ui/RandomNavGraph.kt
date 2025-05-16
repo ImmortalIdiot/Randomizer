@@ -23,7 +23,7 @@ fun RandomNavGraph(
     ) {
         rangeDestination()
         listDestination()
-        diceDestination(navController = navController)
+        diceDestination()
         historyDestination()
         settingsDestination()
         aboutDestination()
