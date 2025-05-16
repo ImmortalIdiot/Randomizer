@@ -23,7 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.immortalidiot.randomizer.R
-import com.immortalidiot.randomizer.data.history.History
+import com.immortalidiot.randomizer.model.HistoryModel
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -59,7 +59,7 @@ fun HistoryScreen(
 }
 
 @Composable
-fun HistoryItem(history: History) {
+fun HistoryItem(history: HistoryModel) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
@@ -82,7 +82,8 @@ fun HistoryItem(history: History) {
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = stringResource(R.string.history_content) + " " + history.content,
+                text = stringResource(R.string.history_content) + " " +
+                        history.content.joinToString(", "),
                 style = MaterialTheme.typography.bodyMedium
             )
             Spacer(modifier = Modifier.height(4.dp))

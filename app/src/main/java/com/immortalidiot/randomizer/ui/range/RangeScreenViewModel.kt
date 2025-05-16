@@ -6,10 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.immortalidiot.randomizer.R
 import com.immortalidiot.randomizer.core.ResourceProvider
 import com.immortalidiot.randomizer.core.UI_STATE_DELAY
-import com.immortalidiot.randomizer.data.Content
 import com.immortalidiot.randomizer.data.ContentType
-import com.immortalidiot.randomizer.data.history.History
 import com.immortalidiot.randomizer.data.history.HistoryRepository
+import com.immortalidiot.randomizer.model.HistoryModel
+import com.immortalidiot.randomizer.model.Mapper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -58,7 +58,11 @@ class RangeScreenViewModel(
         viewModelScope.launch {
             _uiState.value = RangeScreenUiState.Generated
             _result.value = (first..second).random().toString()
-            saveToHistory(first = first, second = second, result = _result.value)
+            saveToHistory(
+                first = first.toString(),
+                second = second.toString(),
+                result = _result.value
+            )
         }
     }
 
@@ -77,19 +81,17 @@ class RangeScreenViewModel(
     }
 
     private suspend fun saveToHistory(
-        first: Long,
-        second: Long,
+        first: String,
+        second: String,
         result: String
     ) {
-        val content = Content.Range(first = first, second = second)
-
-        val history = History(
+        val history = HistoryModel(
             time = LocalDateTime.now(),
             contentType = ContentType.RANGE,
-            content = content,
+            content = listOf(first, second),
             result = result
         )
-        historyRepository.saveHistory(history = history)
+        historyRepository.saveHistory(history = Mapper.toEntity(model = history))
     }
 
     private fun resetUiStateWithDelay() {
