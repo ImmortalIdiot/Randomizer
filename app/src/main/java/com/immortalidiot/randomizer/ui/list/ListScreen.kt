@@ -45,6 +45,7 @@ import com.immortalidiot.randomizer.ui.components.snackbar.showMessage
 import com.immortalidiot.randomizer.ui.theme.RandomizerTheme
 import org.koin.androidx.compose.koinViewModel
 
+// FIXME: the app crashes if there are more than 9 items
 @Composable
 fun ListScreen(
     viewModel: ListScreenViewModel
