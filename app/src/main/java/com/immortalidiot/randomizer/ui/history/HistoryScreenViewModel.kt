@@ -24,4 +24,10 @@ class HistoryScreenViewModel(
             }
         }
     }
+
+    fun deleteHistory() {
+        viewModelScope.launch {
+            historyRepository.deleteAllHistory()
+        }
+    }
 }

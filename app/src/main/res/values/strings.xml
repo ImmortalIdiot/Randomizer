@@ -17,6 +17,8 @@
     <string name="history_type">Type:</string>
     <string name="history_content">Content:</string>
     <string name="history_result">Result:</string>
+    <string name="no_history">There is no history yet</string>
+    <string name="clear_history">Clear history</string>
 
     <string name="to_generate">Press \"Generate\"</string>
 </resources>
