@@ -1,6 +1,6 @@
 package com.immortalidiot.randomizer.ui.list
 
-import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.immortalidiot.randomizer.R
@@ -14,7 +14,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
@@ -25,33 +24,23 @@ class ListScreenViewModel(
     private val _uiState = MutableStateFlow<ListScreenUiState>(ListScreenUiState.Init)
     val uiState: StateFlow<ListScreenUiState> = _uiState.asStateFlow()
 
-    private val _textFields = MutableStateFlow(listOf("", ""))
-    val textFields: StateFlow<List<String>> = _textFields.asStateFlow()
+    val textFields = mutableStateListOf("", "")
 
     private val _result = MutableStateFlow("")
     val result = _result.asStateFlow()
 
-    private val _focusRequesters = MutableStateFlow(listOf(FocusRequester(), FocusRequester()))
-    val focusRequesters: StateFlow<List<FocusRequester>> = _focusRequesters.asStateFlow()
-
     fun updateTextField(index: Int, value: String) {
-        val currentList = _textFields.value.toMutableList()
-        if (index >= currentList.size) {
-            currentList.add(value)
-        } else {
-            currentList[index] = value
+        if (index < textFields.size) {
+            textFields[index] = value
         }
-
-        _textFields.update { currentList }
     }
 
     fun addNewTextField() {
-        _textFields.value += ""
-        _focusRequesters.value += FocusRequester()
+        textFields.add("")
     }
 
     fun generateRandomElementFromList() {
-        val notEmptyElements = _textFields.value.filter { it.isNotEmpty() }
+        val notEmptyElements = textFields.filter { it.isNotEmpty() }
         val size = notEmptyElements.size
 
         if (size >= 2) {

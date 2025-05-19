@@ -3,15 +3,15 @@ package com.immortalidiot.randomizer.ui.list
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.FloatingActionButton
@@ -23,12 +23,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -45,7 +42,6 @@ import com.immortalidiot.randomizer.ui.components.snackbar.showMessage
 import com.immortalidiot.randomizer.ui.theme.RandomizerTheme
 import org.koin.androidx.compose.koinViewModel
 
-// FIXME: the app crashes if there are more than 9 items
 @Composable
 fun ListScreen(
     viewModel: ListScreenViewModel
@@ -59,18 +55,12 @@ fun ListScreen(
 
     val uiState by viewModel.uiState.collectAsState()
 
-    val focusRequesters by viewModel.focusRequesters.collectAsState()
-
-    val textFields by viewModel.textFields.collectAsState()
+    val textFields = viewModel.textFields
     val countTextFields = textFields.size
 
     val result by viewModel.result.collectAsState()
 
-    LaunchedEffect(textFields.size) {
-        if (textFields.size > 2) {
-            focusRequesters.lastOrNull()?.requestFocus()
-        }
-    }
+    val listState = rememberLazyListState()
 
     LaunchedEffect(uiState) {
         if (uiState is ListScreenUiState.Error) {
@@ -92,80 +82,73 @@ fun ListScreen(
             },
         contentAlignment = Alignment.TopCenter
     ) {
-        Column(
-            modifier = Modifier.padding(top = 48.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+        LazyColumn(
+            state = listState,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            contentPadding = PaddingValues(bottom = 96.dp)
         ) {
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                items(count = countTextFields, key = { index -> index }) { index ->
-                    val currentFocusRequester = focusRequesters.getOrNull(index) ?: FocusRequester()
-
-                    OutlinedTextField(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 32.dp)
-                            .focusRequester(currentFocusRequester),
-                        value = textFields.getOrNull(index) ?: "",
-                        onValueChange = { newValue ->
-                            viewModel.updateTextField(index, newValue)
-                        },
-                        label = {
-                            Text(text = stringResource(R.string.item) + " ${index + 1}")
-                        },
-                        maxLines = 1,
-                        singleLine = true,
-                        keyboardActions = KeyboardActions(onDone = {
-                            val nextFocus = focusRequesters.getOrNull(index + 1)
-
-                            if (nextFocus != null) {
-                                nextFocus.requestFocus()
-                            } else {
-                                viewModel.addNewTextField()
-                            }
-                        })
-                    )
-                }
+            item {
+                ErrorSnackbar(
+                    snackbarHostState = snackbarHostState,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
             }
 
-            Text(
-                text = stringResource(R.string.result),
-                style = resultStyle
-            )
+            items(count = 1) {
+                Text(
+                    text = stringResource(R.string.result),
+                    style = resultStyle
+                )
+                UnderlineEmptyText(
+                    modifier = Modifier.height(64.dp),
+                    text = result,
+                )
+            }
 
-            UnderlineEmptyText(
-                modifier = Modifier.height(64.dp),
-                text = result,
-            )
+            items(count = countTextFields, key = { index -> index }) { index ->
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 32.dp),
+                    value = textFields.getOrNull(index) ?: "",
+                    onValueChange = { newValue ->
+                        viewModel.updateTextField(index, newValue)
+                    },
+                    label = {
+                        Text(text = stringResource(R.string.item) + " ${index + 1}")
+                    },
+                    maxLines = 1,
+                    singleLine = true
+                )
+            }
         }
 
-        GenerateButton(
+        Box(
             modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 32.dp)
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 32.dp),
-            onClick = remember { { viewModel.generateRandomElementFromList() } }
-        )
-
-        FloatingActionButton(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(bottom = 32.dp, end = 16.dp)
-                .size(48.dp),
-            shape = CircleShape,
-            onClick = remember { { viewModel.addNewTextField() } }
         ) {
-            Icon(
-                imageVector = Icons.Rounded.Add,
-                contentDescription = ""
+            GenerateButton(
+                modifier = Modifier.align(Alignment.Center),
+                onClick = { viewModel.generateRandomElementFromList() }
             )
-        }
 
-        ErrorSnackbar(
-            snackbarHostState = snackbarHostState,
-            modifier = Modifier.padding(horizontal = 16.dp)
-        )
+            FloatingActionButton(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(end = 32.dp)
+                    .size(48.dp),
+                shape = CircleShape,
+                onClick = { viewModel.addNewTextField() }
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Add,
+                    contentDescription = "Add item"
+                )
+            }
+        }
     }
 }
 
