@@ -21,4 +21,8 @@
     <string name="clear_history">Clear history</string>
 
     <string name="to_generate">Press \"Generate\"</string>
+
+    <string name="light_theme">Light</string>
+    <string name="dark_theme">Dark</string>
+    <string name="system_theme">System</string>
 </resources>
