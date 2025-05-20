@@ -33,8 +33,8 @@ fun CustomTopAppBar(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(colorScheme.surface)
             .padding(top = topPadding)
+            .background(colorScheme.surface)
             .height(height)
             .then(modifier)
     ) {

@@ -57,8 +57,7 @@ fun HistoryScreen(
                 state = listState,
                 modifier = modifier
                     .fillMaxSize()
-                    .padding(horizontal = 16.dp)
-                    .padding(top = 16.dp),
+                    .padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(historyList.value) { history ->
