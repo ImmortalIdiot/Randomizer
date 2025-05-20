@@ -10,3 +10,4 @@ Show loading indicator if history data is loading
 8. Add the ability to change default values on RangeScreen to SettingScreen
 9. Add the ability to repeat generation from history
 10. Replace number with an image in DiceScreen
+11. Change transition animation between screens
