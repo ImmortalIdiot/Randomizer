@@ -20,8 +20,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,14 +41,30 @@ import com.immortalidiot.randomizer.R
 import com.immortalidiot.randomizer.ui.RandomNavGraph
 import com.immortalidiot.randomizer.ui.Routes
 import com.immortalidiot.randomizer.ui.theme.RandomizerTheme
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
-fun RandomizerAppBar(
-    navController: NavHostController,
-    isExpanded: Boolean,
-    onMenuClick: () -> Unit = {},
-    onDismissMenu: () -> Unit = {},
-) {
+fun RandomizerAppBar(navController: NavHostController) {
+    var expanded by remember { mutableStateOf(false) }
+
+    val coroutineScope = rememberCoroutineScope()
+    val menuClosesDelay = 300L
+
+    fun navigateAndClose(route: String) {
+        coroutineScope.launch {
+            navController.navigateSingleTopRestoreState(route)
+            delay(menuClosesDelay)
+            expanded = false
+        }
+    }
+
+    val menuItems = listOf(
+        MenuItem(Icons.Rounded.History, R.string.history, Routes.HISTORY_ROUTE),
+        MenuItem(Icons.Rounded.Settings, R.string.settings, Routes.SETTINGS_ROUTE),
+        MenuItem(Icons.Rounded.Info, R.string.application_info, Routes.APPLICATION_INFO_ROUTE)
+    )
+
     CustomTopAppBar(
         title = {
             Text(
@@ -57,54 +76,31 @@ fun RandomizerAppBar(
         },
         actions = {
             IconButton(
-                onClick = onMenuClick
+                onClick = { expanded = true }
             ) {
                 Icon(
                     imageVector = Icons.Rounded.MoreVert,
                     contentDescription = ""
                 )
 
-                // TODO: close drop down menu after clicks on item
                 DropdownMenu(
                     modifier = Modifier
                         .width(160.dp)
                         .clip(shape = RoundedCornerShape(16.dp)),
-                    expanded = isExpanded,
-                    onDismissRequest = onDismissMenu
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
                 ) {
-                    DropdownMenuItem(
-                        text = {
-                            AppBarMenuItem(
-                                icon = Icons.Rounded.History,
-                                title = stringResource(R.string.history)
-                            )
-                        },
-                        onClick = {
-                            navController.navigateSingleTopRestoreState(Routes.HISTORY_ROUTE)
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = {
-                            AppBarMenuItem(
-                                icon = Icons.Rounded.Settings,
-                                title = stringResource(R.string.settings)
-                            )
-                        },
-                        onClick = {
-                            navController.navigateSingleTopRestoreState(Routes.SETTINGS_ROUTE)
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = {
-                            AppBarMenuItem(
-                                icon = Icons.Rounded.Info,
-                                title = stringResource(R.string.application_info)
-                            )
-                        },
-                        onClick = {
-                            navController.navigateSingleTopRestoreState(Routes.APPLICATION_INFO_ROUTE)
-                        }
-                    )
+                    menuItems.forEach { (icon, name, route) ->
+                        DropdownMenuItem(
+                            text = {
+                                AppBarMenuItem(
+                                    icon = icon,
+                                    title = stringResource(name)
+                                )
+                            },
+                            onClick = { navigateAndClose(route) }
+                        )
+                    }
                 }
             }
         }
@@ -120,6 +116,12 @@ private fun NavController.navigateSingleTopRestoreState(route: String) {
         restoreState = true
     }
 }
+
+private data class MenuItem(
+    val icon: ImageVector,
+    val titleNameRes: Int,
+    val route: String
+)
 
 @Composable
 fun AppBarMenuItem(
@@ -144,17 +146,7 @@ fun AppBarMenuItem(
 @Composable
 private fun AppBarPreview() {
     RandomizerTheme {
-        val expanded = remember { mutableStateOf(false) }
-        Scaffold(
-            topBar = {
-                RandomizerAppBar(
-                    navController = rememberNavController(),
-                    isExpanded = expanded.value,
-                    onMenuClick = { expanded.value = true },
-                    onDismissMenu = { expanded.value = false }
-                )
-            }
-        ) { innerPadding ->
+        Scaffold(topBar = { RandomizerAppBar(navController = rememberNavController()) }) { innerPadding ->
             Box(
                 modifier = Modifier
                     .padding(innerPadding)

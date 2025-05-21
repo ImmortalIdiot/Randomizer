@@ -41,7 +41,6 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
-            val expanded = remember { mutableStateOf(false) }
             val snackbarHostState = remember { SnackbarHostState() }
 
             var currentTheme: ThemePreference by rememberSaveable {
@@ -70,14 +69,7 @@ class MainActivity : ComponentActivity() {
                 RandomizerTheme(themePreference = currentTheme) {
                     Scaffold(
                         modifier = Modifier.fillMaxSize(),
-                        topBar = {
-                            RandomizerAppBar(
-                                navController = navController,
-                                isExpanded = expanded.value,
-                                onMenuClick = { expanded.value = true },
-                                onDismissMenu = { expanded.value = false },
-                            )
-                        },
+                        topBar = { RandomizerAppBar(navController = navController) },
                         bottomBar = { BottomNavigationBar(navController = navController) }
                     ) { innerPadding ->
                         RandomNavGraph(
