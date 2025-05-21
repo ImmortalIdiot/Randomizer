@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.immortalidiot.randomizer.R
+import com.immortalidiot.randomizer.data.ContentType
 import com.immortalidiot.randomizer.data.model.HistoryModel
 import com.immortalidiot.randomizer.ui.components.button.ScrollToTopButton
 import java.time.format.DateTimeFormatter
@@ -90,6 +91,12 @@ fun HistoryScreen(
 
 @Composable
 fun HistoryItem(history: HistoryModel) {
+    val contentName = stringResource(id = when (history.contentType) {
+        ContentType.RANGE -> { R.string.range }
+        ContentType.LIST -> { R.string.list }
+        ContentType.DICE -> { R.string.dice }
+    }).uppercase()
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
@@ -106,7 +113,7 @@ fun HistoryItem(history: HistoryModel) {
             )
             Spacer(modifier = Modifier.height(6.dp))
             Text(
-                text = stringResource(R.string.history_type) + " " + history.contentType.name,
+                text = stringResource(R.string.history_type) + " " + contentName,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.SemiBold
             )
