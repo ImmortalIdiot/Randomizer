@@ -4,7 +4,10 @@ import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ListAlt
 import androidx.compose.material.icons.rounded.Casino
+import androidx.compose.material.icons.rounded.History
+import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Looks4
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.immortalidiot.randomizer.R
@@ -49,5 +52,23 @@ val navigationItems = listOf(
         label = R.string.dice,
         icon = Icons.Rounded.Casino,
         route = RandomNavigation.DiceRoute.route
+    )
+)
+
+val appBarMenuItems = listOf(
+    RandomDestination(
+        label = R.string.history,
+        icon = Icons.Rounded.History,
+        route = Routes.HISTORY_ROUTE
+    ),
+    RandomDestination(
+        label = R.string.settings,
+        icon = Icons.Rounded.Settings,
+        route = Routes.SETTINGS_ROUTE
+    ),
+    RandomDestination(
+        label = R.string.application_info,
+        icon = Icons.Rounded.Info,
+        route = Routes.APPLICATION_INFO_ROUTE
     )
 )
