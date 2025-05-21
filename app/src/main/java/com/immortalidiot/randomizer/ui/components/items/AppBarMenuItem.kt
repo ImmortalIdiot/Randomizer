@@ -1,4 +1,4 @@
-package com.immortalidiot.randomizer.ui.components.bar
+package com.immortalidiot.randomizer.ui.components.items
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
