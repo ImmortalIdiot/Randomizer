@@ -22,7 +22,8 @@
 
     <string name="to_generate">Нажмите \"Сгенерировать\"</string>
 
+    <string name="theme">Тема</string>
     <string name="light_theme">Светлая</string>
     <string name="dark_theme">Тёмная</string>
-    <string name="system_theme">Системная</string>
+    <string name="system_theme">Авто</string>
 </resources>
