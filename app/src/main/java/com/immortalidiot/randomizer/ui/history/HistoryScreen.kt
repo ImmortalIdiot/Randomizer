@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.immortalidiot.randomizer.R
+import com.immortalidiot.randomizer.ui.components.animations.CircularIndicator
 import com.immortalidiot.randomizer.ui.components.button.ScrollToTopButton
 import com.immortalidiot.randomizer.ui.components.items.HistoryItem
 
@@ -29,53 +31,63 @@ fun HistoryScreen(
     viewModel: HistoryScreenViewModel,
     modifier: Modifier = Modifier
 ) {
+    val uiState by viewModel.uiState.collectAsState()
     val historyList = viewModel.historyList.collectAsState()
     val listState = rememberLazyListState()
 
-    if (historyList.value.isEmpty()) {
+    if (uiState is HistoryScreenUiState.Loading) {
         Box(
-            modifier = modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = "No history yet",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            CircularIndicator()
         }
     } else {
-        Box {
-            LazyColumn(
-                state = listState,
-                modifier = modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                items(historyList.value) { history ->
-                    HistoryItem(history = history)
-                }
-            }
-
-            Button(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 16.dp)
-                    .height(48.dp),
-                onClick = remember { { viewModel.deleteHistory() } },
+        if (historyList.value.isEmpty()) {
+            Box(
+                modifier = modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = stringResource(R.string.clear_history),
-                    textAlign = TextAlign.Center
+                    text = "No history yet",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-            ScrollToTopButton(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(bottom = 16.dp, end = 32.dp)
-                    .size(48.dp),
-                listState = listState,
-            )
+        } else {
+            Box {
+                LazyColumn(
+                    state = listState,
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(historyList.value) { history ->
+                        HistoryItem(history = history)
+                    }
+                }
+
+                Button(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 16.dp)
+                        .height(48.dp),
+                    onClick = remember { { viewModel.deleteHistory() } },
+                ) {
+                    Text(
+                        text = stringResource(R.string.clear_history),
+                        textAlign = TextAlign.Center
+                    )
+                }
+                ScrollToTopButton(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(bottom = 16.dp, end = 32.dp)
+                        .size(48.dp),
+                    listState = listState,
+                )
+            }
         }
     }
 }
