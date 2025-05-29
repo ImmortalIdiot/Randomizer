@@ -77,11 +77,6 @@ fun RandomizerTheme(
     )
 }
 
-val LocalThemePreferenceProvider = staticCompositionLocalOf { ThemePreference.SYSTEM }
-val LocalThemeChangeProvider = staticCompositionLocalOf<(ThemePreference) -> Unit> {
-    error("onThemeChange is not provided")
-}
-
 enum class ThemePreference {
     DARK, LIGHT, SYSTEM
 }

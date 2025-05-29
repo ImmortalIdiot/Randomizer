@@ -25,9 +25,9 @@ import com.immortalidiot.randomizer.ui.components.bar.RandomizerAppBar
 import com.immortalidiot.randomizer.ui.components.snackbar.LocalSnackbarHostState
 import com.immortalidiot.randomizer.ui.providers.LocalInitialScreenChangeProvider
 import com.immortalidiot.randomizer.ui.providers.LocalInitialScreenProvider
+import com.immortalidiot.randomizer.ui.providers.LocalThemeChangeProvider
+import com.immortalidiot.randomizer.ui.providers.LocalThemePreferenceProvider
 import com.immortalidiot.randomizer.ui.settings.Settings
-import com.immortalidiot.randomizer.ui.theme.LocalThemeChangeProvider
-import com.immortalidiot.randomizer.ui.theme.LocalThemePreferenceProvider
 import com.immortalidiot.randomizer.ui.theme.RandomizerTheme
 import com.immortalidiot.randomizer.ui.theme.ThemePreference
 import kotlinx.coroutines.CoroutineScope

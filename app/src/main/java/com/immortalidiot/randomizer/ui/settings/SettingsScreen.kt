@@ -30,8 +30,8 @@ import com.immortalidiot.randomizer.R
 import com.immortalidiot.randomizer.ui.Routes
 import com.immortalidiot.randomizer.ui.providers.LocalInitialScreenChangeProvider
 import com.immortalidiot.randomizer.ui.providers.LocalInitialScreenProvider
-import com.immortalidiot.randomizer.ui.theme.LocalThemeChangeProvider
-import com.immortalidiot.randomizer.ui.theme.LocalThemePreferenceProvider
+import com.immortalidiot.randomizer.ui.providers.LocalThemeChangeProvider
+import com.immortalidiot.randomizer.ui.providers.LocalThemePreferenceProvider
 import com.immortalidiot.randomizer.ui.theme.ThemePreference
 
 @Composable
