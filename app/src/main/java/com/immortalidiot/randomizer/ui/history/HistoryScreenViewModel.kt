@@ -1,5 +1,6 @@
 package com.immortalidiot.randomizer.ui.history
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.immortalidiot.randomizer.data.history.HistoryRepository
@@ -22,6 +23,11 @@ class HistoryScreenViewModel(
     private val _historyList = MutableStateFlow<List<HistoryModel>>(emptyList())
     val historyList: StateFlow<List<HistoryModel>> = _historyList.asStateFlow()
 
+    private val _selectedOne = MutableStateFlow(false)
+    val selectedOne: StateFlow<Boolean> = _selectedOne.asStateFlow()
+
+    private val _deleteHistoryList = MutableStateFlow<List<HistoryModel>>(emptyList())
+
     init {
         viewModelScope.launch {
             _uiState.value = HistoryScreenUiState.Loading
@@ -36,9 +42,32 @@ class HistoryScreenViewModel(
         }
     }
 
+    fun toggleSelectedOne() {
+        _selectedOne.value = !_selectedOne.value
+    }
+
     fun deleteHistory() {
         viewModelScope.launch {
             historyRepository.deleteAllHistory()
+        }
+    }
+
+    fun addItemToList(item: HistoryModel) {
+        _deleteHistoryList.value += item
+        Log.d("items", _deleteHistoryList.value.joinToString(", "))
+    }
+
+    fun removeItemFromList(item: HistoryModel) {
+        _deleteHistoryList.value -= item
+        Log.d("items", _deleteHistoryList.value.joinToString(", "))
+    }
+
+    fun deleteHistoryByList() {
+        viewModelScope.launch {
+            historyRepository.deleteByList(
+                _deleteHistoryList.value.map { Mapper.toEntity(it) }
+            )
+            _deleteHistoryList.value = emptyList()
         }
     }
 }

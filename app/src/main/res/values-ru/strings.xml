@@ -19,6 +19,7 @@
     <string name="history_result">Результат:</string>
     <string name="no_history">Истории пока нет</string>
     <string name="clear_history">Очистить историю</string>
+    <string name="clear_selected_history">Удалить выбранное</string>
 
     <string name="to_generate">Нажмите \"Сгенерировать\"</string>
 

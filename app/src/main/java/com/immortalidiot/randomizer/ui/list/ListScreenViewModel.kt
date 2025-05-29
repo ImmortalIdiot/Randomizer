@@ -60,6 +60,7 @@ class ListScreenViewModel(
 
     private suspend fun saveToHistory(content: List<String>, result: String) {
         val history = HistoryModel(
+            id = 0L,
             time = LocalDateTime.now(),
             contentType = ContentType.LIST,
             content = content,

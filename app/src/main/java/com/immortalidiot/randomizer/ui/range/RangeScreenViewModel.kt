@@ -87,6 +87,7 @@ class RangeScreenViewModel(
         result: String
     ) {
         val history = HistoryModel(
+            id = 0L,
             time = LocalDateTime.now(),
             contentType = ContentType.RANGE,
             content = listOf(first, second),

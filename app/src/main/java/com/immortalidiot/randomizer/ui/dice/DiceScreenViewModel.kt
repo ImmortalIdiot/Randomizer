@@ -57,6 +57,7 @@ class DiceScreenViewModel(
 
     private suspend fun saveToHistory() {
         val history = HistoryModel(
+            id = 0L,
             time = LocalDateTime.now(),
             contentType = ContentType.DICE,
             content = listOf("1..6"),

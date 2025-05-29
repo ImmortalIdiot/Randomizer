@@ -18,6 +18,7 @@ object Mapper {
         }
 
         return HistoryModel(
+            id = entity.id,
             time = entity.time,
             contentType = entity.contentType,
             content = modelContent,
@@ -27,6 +28,7 @@ object Mapper {
 
     fun toEntity(model: HistoryModel): History {
         return History(
+            id = model.id,
             time = model.time,
             contentType = model.contentType,
             content = when {
