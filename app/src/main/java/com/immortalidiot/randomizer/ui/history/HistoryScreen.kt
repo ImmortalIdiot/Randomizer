@@ -1,5 +1,10 @@
 package com.immortalidiot.randomizer.ui.history
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,58 +40,72 @@ fun HistoryScreen(
     val historyList = viewModel.historyList.collectAsState()
     val listState = rememberLazyListState()
 
-    if (uiState is HistoryScreenUiState.Loading) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularIndicator()
+    val duration = 1500
+
+    AnimatedContent(
+        targetState = uiState,
+        transitionSpec = {
+            fadeIn(
+                animationSpec = tween(duration)
+            ) togetherWith fadeOut(animationSpec = tween(duration))
         }
-    } else {
-        if (historyList.value.isEmpty()) {
-            Box(
-                modifier = modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "No history yet",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        } else {
-            Box {
-                LazyColumn(
-                    state = listState,
-                    modifier = modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) { targetState ->
+        when (targetState) {
+            is HistoryScreenUiState.Loading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
-                    items(historyList.value) { history ->
-                        HistoryItem(history = history)
+                    CircularIndicator()
+                }
+            }
+            else -> {
+                if (historyList.value.isEmpty()) {
+                    Box(
+                        modifier = modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "No history yet",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                } else {
+                    Box {
+                        LazyColumn(
+                            state = listState,
+                            modifier = modifier
+                                .fillMaxSize()
+                                .padding(horizontal = 16.dp),
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            items(historyList.value) { history ->
+                                HistoryItem(history = history)
+                            }
+                        }
+
+                        Button(
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .padding(bottom = 16.dp)
+                                .height(48.dp),
+                            onClick = remember { { viewModel.deleteHistory() } },
+                        ) {
+                            Text(
+                                text = stringResource(R.string.clear_history),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                        ScrollToTopButton(
+                            modifier = Modifier
+                                .align(Alignment.BottomEnd)
+                                .padding(bottom = 16.dp, end = 32.dp)
+                                .size(48.dp),
+                            listState = listState,
+                        )
                     }
                 }
-
-                Button(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(bottom = 16.dp)
-                        .height(48.dp),
-                    onClick = remember { { viewModel.deleteHistory() } },
-                ) {
-                    Text(
-                        text = stringResource(R.string.clear_history),
-                        textAlign = TextAlign.Center
-                    )
-                }
-                ScrollToTopButton(
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(bottom = 16.dp, end = 32.dp)
-                        .size(48.dp),
-                    listState = listState,
-                )
             }
         }
     }
