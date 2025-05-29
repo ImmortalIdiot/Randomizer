@@ -8,6 +8,8 @@ interface ResourceProvider {
     fun getString(resId: Int): String
     suspend fun saveTheme(themePreference: ThemePreference)
     suspend fun loadTheme(): ThemePreference?
+    suspend fun saveInitialScreen(route: String)
+    suspend fun loadInitialScreen(): String?
 }
 
 class ResourceProviderImpl(private val context: Context) : ResourceProvider {
@@ -19,5 +21,13 @@ class ResourceProviderImpl(private val context: Context) : ResourceProvider {
 
     override suspend fun saveTheme(themePreference: ThemePreference) {
         return Settings.saveThemePreference(context, themePreference)
+    }
+
+    override suspend fun saveInitialScreen(route: String) {
+        return Settings.saveInitialScreen(context, route)
+    }
+
+    override suspend fun loadInitialScreen(): String? {
+        return Settings.loadInitialScreen(context)
     }
 }

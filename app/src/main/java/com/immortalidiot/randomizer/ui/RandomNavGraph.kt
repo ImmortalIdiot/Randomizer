@@ -14,12 +14,13 @@ import com.immortalidiot.randomizer.ui.settings.settingsDestination
 @Composable
 fun RandomNavGraph(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    entryPoint: String
 ) {
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = Routes.RANGE_ROUTE
+        startDestination = entryPoint
     ) {
         rangeDestination()
         listDestination()

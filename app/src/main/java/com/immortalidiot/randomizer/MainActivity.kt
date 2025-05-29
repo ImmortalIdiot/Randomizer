@@ -19,9 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.immortalidiot.randomizer.core.ResourceProvider
 import com.immortalidiot.randomizer.ui.RandomNavGraph
+import com.immortalidiot.randomizer.ui.Routes
 import com.immortalidiot.randomizer.ui.components.bar.BottomNavigationBar
 import com.immortalidiot.randomizer.ui.components.bar.RandomizerAppBar
 import com.immortalidiot.randomizer.ui.components.snackbar.LocalSnackbarHostState
+import com.immortalidiot.randomizer.ui.providers.LocalInitialScreenChangeProvider
+import com.immortalidiot.randomizer.ui.providers.LocalInitialScreenProvider
 import com.immortalidiot.randomizer.ui.settings.Settings
 import com.immortalidiot.randomizer.ui.theme.LocalThemeChangeProvider
 import com.immortalidiot.randomizer.ui.theme.LocalThemePreferenceProvider
@@ -56,15 +59,36 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
+            val realInitialRoute =
+                remember {
+                    runBlocking { resourceProvider.loadInitialScreen() ?: Routes.RANGE_ROUTE }
+                }
+
+            var savedInitialRoute by rememberSaveable {
+                mutableStateOf(realInitialRoute)
+            }
+
+            val onInitialScreenChange: (String) -> Unit = { newInitialRoute ->
+                savedInitialRoute = newInitialRoute
+                CoroutineScope(Dispatchers.IO).launch {
+                    resourceProvider.saveInitialScreen(newInitialRoute)
+                }
+            }
+
             LaunchedEffect(Unit) {
                 val savedTheme = Settings.loadThemePreference(this@MainActivity)
                 currentTheme = savedTheme ?: ThemePreference.SYSTEM
+
+                val route = Settings.loadInitialScreen(this@MainActivity)
+                savedInitialRoute = route ?: Routes.RANGE_ROUTE
             }
 
             CompositionLocalProvider(
                 LocalSnackbarHostState provides snackbarHostState,
                 LocalThemePreferenceProvider provides currentTheme,
-                LocalThemeChangeProvider provides onThemeChange
+                LocalThemeChangeProvider provides onThemeChange,
+                LocalInitialScreenProvider provides savedInitialRoute,
+                LocalInitialScreenChangeProvider provides onInitialScreenChange
             ) {
                 RandomizerTheme(themePreference = currentTheme) {
                     Scaffold(
@@ -74,7 +98,8 @@ class MainActivity : ComponentActivity() {
                     ) { innerPadding ->
                         RandomNavGraph(
                             modifier = Modifier.padding(innerPadding),
-                            navController = navController
+                            navController = navController,
+                            entryPoint = realInitialRoute
                         )
                     }
                 }

@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.first
 
 object Settings {
     private val KEY_THEME = stringPreferencesKey(name = "theme")
+    private val KEY_INITIAL_SCREEN = stringPreferencesKey(name = "initial_screen")
 
     private val Context.settingsDatastore by preferencesDataStore(name = "settings")
 
@@ -22,5 +23,16 @@ object Settings {
         val preference = context.settingsDatastore.data.first()
         val themePreference = preference[KEY_THEME]
         return if (themePreference != null) ThemePreference.valueOf(themePreference) else null
+    }
+
+    suspend fun saveInitialScreen(context: Context, route: String) {
+        context.settingsDatastore.edit {
+            it[KEY_INITIAL_SCREEN] = route
+        }
+    }
+
+    suspend fun loadInitialScreen(context: Context): String? {
+        val preference = context.settingsDatastore.data.first()
+        return preference[KEY_INITIAL_SCREEN]
     }
 }

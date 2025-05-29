@@ -31,6 +31,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.immortalidiot.randomizer.R
 import com.immortalidiot.randomizer.ui.RandomNavGraph
+import com.immortalidiot.randomizer.ui.Routes
 import com.immortalidiot.randomizer.ui.appBarMenuItems
 import com.immortalidiot.randomizer.ui.components.items.AppBarMenuItem
 import com.immortalidiot.randomizer.ui.theme.RandomizerTheme
@@ -112,7 +113,7 @@ private fun AppBarPreview() {
                     .padding(innerPadding)
                     .fillMaxSize()
             ) {
-                RandomNavGraph(navController = rememberNavController())
+                RandomNavGraph(navController = rememberNavController(), entryPoint = Routes.RANGE_ROUTE)
             }
         }
     }

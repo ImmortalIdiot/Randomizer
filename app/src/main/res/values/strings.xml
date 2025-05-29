@@ -26,4 +26,6 @@
     <string name="light_theme">Light</string>
     <string name="dark_theme">Dark</string>
     <string name="system_theme">Auto</string>
+
+    <string name="initial_screen">Initial Screen</string>
 </resources>
