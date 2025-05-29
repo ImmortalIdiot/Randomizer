@@ -1,6 +1,5 @@
 package com.immortalidiot.randomizer.ui.history
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.immortalidiot.randomizer.data.history.HistoryRepository
@@ -12,21 +11,21 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HistoryScreenViewModel(
     private val historyRepository: HistoryRepository
 ) : ViewModel() {
+
     private val _uiState = MutableStateFlow<HistoryScreenUiState>(HistoryScreenUiState.Init)
     val uiState: StateFlow<HistoryScreenUiState> = _uiState.asStateFlow()
 
     private val _historyList = MutableStateFlow<List<HistoryModel>>(emptyList())
     val historyList: StateFlow<List<HistoryModel>> = _historyList.asStateFlow()
 
-    private val _selectedOne = MutableStateFlow(false)
-    val selectedOne: StateFlow<Boolean> = _selectedOne.asStateFlow()
-
-    private val _deleteHistoryList = MutableStateFlow<List<HistoryModel>>(emptyList())
+    private val _selectedIds = MutableStateFlow<Set<Long>>(emptySet())
+    val selectedIds: StateFlow<Set<Long>> = _selectedIds.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -42,32 +41,28 @@ class HistoryScreenViewModel(
         }
     }
 
-    fun toggleSelectedOne() {
-        _selectedOne.value = !_selectedOne.value
+    fun toggleSelection(id: Long) {
+        _selectedIds.update { current ->
+            if (id in current) current - id else current + id
+        }
     }
 
     fun deleteHistory() {
         viewModelScope.launch {
             historyRepository.deleteAllHistory()
+            clearSelection()
         }
     }
 
-    fun addItemToList(item: HistoryModel) {
-        _deleteHistoryList.value += item
-        Log.d("items", _deleteHistoryList.value.joinToString(", "))
+    private fun clearSelection() {
+        _selectedIds.value = emptySet()
     }
 
-    fun removeItemFromList(item: HistoryModel) {
-        _deleteHistoryList.value -= item
-        Log.d("items", _deleteHistoryList.value.joinToString(", "))
-    }
-
-    fun deleteHistoryByList() {
+    fun deleteSelectedHistory() {
         viewModelScope.launch {
-            historyRepository.deleteByList(
-                _deleteHistoryList.value.map { Mapper.toEntity(it) }
-            )
-            _deleteHistoryList.value = emptyList()
+            val itemsToDelete = _historyList.value.filter { it.id in _selectedIds.value }
+            historyRepository.deleteByList(itemsToDelete.map { Mapper.toEntity(it) })
+            clearSelection()
         }
     }
 }
