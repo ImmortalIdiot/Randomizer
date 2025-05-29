@@ -12,6 +12,8 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.immortalidiot.randomizer.R
 
+val bottomBarRoutes = listOf(Routes.RANGE_ROUTE, Routes.LIST_ROUTE, Routes.DICE_ROUTE)
+
 object Routes {
     val RANGE_ROUTE = RandomNavigation.RangeRoute.route
     val LIST_ROUTE = RandomNavigation.ListRoute.route
