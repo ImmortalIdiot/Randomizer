@@ -59,10 +59,9 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            val realInitialRoute =
-                remember {
-                    runBlocking { resourceProvider.loadInitialScreen() ?: Routes.RANGE_ROUTE }
-                }
+            val realInitialRoute = remember {
+                runBlocking { resourceProvider.loadInitialScreen() ?: Routes.RANGE_ROUTE }
+            }
 
             var savedInitialRoute by rememberSaveable {
                 mutableStateOf(realInitialRoute)
