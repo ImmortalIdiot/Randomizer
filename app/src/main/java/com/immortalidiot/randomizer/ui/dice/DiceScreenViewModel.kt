@@ -5,14 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.immortalidiot.randomizer.R
 import com.immortalidiot.randomizer.data.ContentType
 import com.immortalidiot.randomizer.data.history.HistoryRepository
-import com.immortalidiot.randomizer.data.model.HistoryModel
+import com.immortalidiot.randomizer.data.model.HistoryModelFabric
 import com.immortalidiot.randomizer.data.model.Mapper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 
 class DiceScreenViewModel(
     private val historyRepository: HistoryRepository
@@ -56,9 +55,7 @@ class DiceScreenViewModel(
     }
 
     private suspend fun saveToHistory() {
-        val history = HistoryModel(
-            id = 0L,
-            time = LocalDateTime.now(),
+        val history = HistoryModelFabric.createHistory(
             contentType = ContentType.DICE,
             content = listOf("1..6"),
             result = (diceFaces.indexOf(_currentFace.value) + 1).toString()
