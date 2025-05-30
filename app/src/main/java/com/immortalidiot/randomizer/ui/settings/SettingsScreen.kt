@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -56,6 +57,7 @@ fun SettingsScreen(
     val initialScreen = LocalInitialScreenProvider.current
 
     val snackbarHostState = LocalSnackbarHostState.current
+    val successSnackbarHostState = remember { SnackbarHostState() }
 
     val uiState by viewModel.uiState.collectAsState()
     val first = viewModel.first.collectAsState()
@@ -114,7 +116,7 @@ fun SettingsScreen(
         }
         if (uiState is SettingsScreenUiState.Success) {
             val toastText = (uiState as SettingsScreenUiState.Success).message
-            snackbarHostState.showMessage(toastText)
+            successSnackbarHostState.showMessage(toastText)
         }
     }
 
@@ -244,7 +246,12 @@ fun SettingsScreen(
         }
         CustomSnackbar(
             snackbarHostState = snackbarHostState,
-            color = if (uiState !is SettingsScreenUiState.Error) BrightLightGreen else Color.Red,
+            color = Color.Red,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+        CustomSnackbar(
+            snackbarHostState = successSnackbarHostState,
+            color = BrightLightGreen,
             modifier = Modifier.padding(horizontal = 16.dp)
         )
     }

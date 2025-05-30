@@ -87,7 +87,7 @@ class MainActivity : ComponentActivity() {
                 LocalThemePreferenceProvider provides currentTheme,
                 LocalThemeChangeProvider provides onThemeChange,
                 LocalInitialScreenProvider provides savedInitialRoute,
-                LocalInitialScreenChangeProvider provides onInitialScreenChange
+                LocalInitialScreenChangeProvider provides onInitialScreenChange,
             ) {
                 RandomizerTheme(themePreference = currentTheme) {
                     Scaffold(
