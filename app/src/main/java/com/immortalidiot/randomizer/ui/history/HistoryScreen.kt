@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,12 +22,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.immortalidiot.randomizer.R
 import com.immortalidiot.randomizer.ui.components.animations.CircularIndicator
-import com.immortalidiot.randomizer.ui.components.button.ScrollToTopButton
+import com.immortalidiot.randomizer.ui.components.buttons.ButtonWithTextRes
+import com.immortalidiot.randomizer.ui.components.buttons.ScrollToTopButton
 import com.immortalidiot.randomizer.ui.components.items.HistoryItem
 
 @Composable
@@ -41,13 +39,13 @@ fun HistoryScreen(
     val selectedIds by viewModel.selectedIds.collectAsState()
     val listState = rememberLazyListState()
 
-    val duration = 1500
+    val contentLoadingAnimation = 1500
 
     AnimatedContent(
         targetState = uiState,
         transitionSpec = {
-            fadeIn(animationSpec = tween(duration)) togetherWith
-                    fadeOut(animationSpec = tween(duration))
+            fadeIn(animationSpec = tween(contentLoadingAnimation)) togetherWith
+                    fadeOut(animationSpec = tween(contentLoadingAnimation))
         }
     ) { targetState ->
         when (targetState) {
@@ -106,33 +104,24 @@ fun HistoryScreen(
                             }
                         }
 
-                        if (selectedIds.isEmpty()) {
-                            Button(
-                                modifier = Modifier
-                                    .align(Alignment.BottomCenter)
-                                    .padding(bottom = 16.dp)
-                                    .height(48.dp),
-                                onClick = { viewModel.deleteHistory() },
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.clear_history),
-                                    textAlign = TextAlign.Center
-                                )
+                        ButtonWithTextRes(
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .padding(bottom = 16.dp)
+                                .height(48.dp),
+                            onClick = {
+                                if (selectedIds.isEmpty()) {
+                                    viewModel.deleteHistory()
+                                } else {
+                                    viewModel.deleteSelectedHistory()
+                                }
+                            },
+                            textRes = if (selectedIds.isEmpty()) {
+                                R.string.clear_history
+                            } else {
+                                R.string.clear_selected_history
                             }
-                        } else {
-                            Button(
-                                modifier = Modifier
-                                    .align(Alignment.BottomCenter)
-                                    .padding(bottom = 16.dp)
-                                    .height(48.dp),
-                                onClick = { viewModel.deleteSelectedHistory() },
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.clear_selected_history),
-                                    textAlign = TextAlign.Center
-                                )
-                            }
-                        }
+                        )
 
                         ScrollToTopButton(
                             modifier = Modifier

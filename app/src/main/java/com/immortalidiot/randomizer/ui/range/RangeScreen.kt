@@ -3,7 +3,6 @@ package com.immortalidiot.randomizer.ui.range
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,13 +20,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.immortalidiot.randomizer.R
-import com.immortalidiot.randomizer.ui.components.button.GenerateButton
-import com.immortalidiot.randomizer.ui.components.field.NumberInputField
-import com.immortalidiot.randomizer.ui.components.field.UnderlineEmptyText
-import com.immortalidiot.randomizer.ui.components.snackbar.CustomSnackbar
-import com.immortalidiot.randomizer.ui.components.snackbar.LocalSnackbarHostState
-import com.immortalidiot.randomizer.ui.components.snackbar.showMessage
-import com.immortalidiot.randomizer.ui.theme.BrightLightGreen
+import com.immortalidiot.randomizer.ui.components.buttons.GenerateButton
+import com.immortalidiot.randomizer.ui.components.fields.NumberInputField
+import com.immortalidiot.randomizer.ui.components.fields.UnderlineEmptyText
+import com.immortalidiot.randomizer.ui.components.snackbars.CustomSnackbar
+import com.immortalidiot.randomizer.ui.components.snackbars.showMessage
+import com.immortalidiot.randomizer.ui.components.spacers.VerticalScreenSpacer
+import com.immortalidiot.randomizer.ui.providers.LocalSnackbarHostState
 import com.immortalidiot.randomizer.ui.theme.RandomizerTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -53,9 +52,7 @@ fun RangeScreen(
         }
     }
 
-    Box(
-        modifier = modifier.fillMaxSize()
-    ) {
+    Box(modifier = modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
                 .align(Alignment.Center)
@@ -67,18 +64,18 @@ fun RangeScreen(
                 onValueChange = { viewModel.updateFirstField(newValue = it) },
                 placeholderText = stringResource(R.string.first_number)
             )
-            ScreenSpacer()
+            VerticalScreenSpacer()
             NumberInputField(
                 value = secondField,
                 onValueChange = { viewModel.updateSecondField(newValue = it) },
                 placeholderText = stringResource(R.string.second_number)
             )
-            ScreenSpacer()
+            VerticalScreenSpacer()
             Text(
                 text = stringResource(R.string.result),
                 style = resultStyle
             )
-            ScreenSpacer()
+            VerticalScreenSpacer()
             UnderlineEmptyText(
                 modifier = modifier.height(64.dp),
                 text = result,
@@ -98,14 +95,9 @@ fun RangeScreen(
         CustomSnackbar(
             snackbarHostState = snackbarHostState,
             modifier = modifier.padding(horizontal = 16.dp),
-            color = if (uiState !is RangeScreenUiState.Error) BrightLightGreen else Color.Red
+            color = Color.Red
         )
     }
-}
-
-@Composable
-private fun ScreenSpacer() {
-    Spacer(modifier = Modifier.height(16.dp))
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)

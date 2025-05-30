@@ -35,18 +35,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.immortalidiot.randomizer.R
-import com.immortalidiot.randomizer.ui.components.button.GenerateButton
-import com.immortalidiot.randomizer.ui.components.field.UnderlineEmptyText
-import com.immortalidiot.randomizer.ui.components.snackbar.CustomSnackbar
-import com.immortalidiot.randomizer.ui.components.snackbar.LocalSnackbarHostState
-import com.immortalidiot.randomizer.ui.components.snackbar.showMessage
-import com.immortalidiot.randomizer.ui.theme.BrightLightGreen
+import com.immortalidiot.randomizer.ui.components.buttons.GenerateButton
+import com.immortalidiot.randomizer.ui.components.fields.UnderlineEmptyText
+import com.immortalidiot.randomizer.ui.components.snackbars.CustomSnackbar
+import com.immortalidiot.randomizer.ui.components.snackbars.showMessage
+import com.immortalidiot.randomizer.ui.providers.LocalSnackbarHostState
 import com.immortalidiot.randomizer.ui.theme.RandomizerTheme
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ListScreen(
-    viewModel: ListScreenViewModel
+    viewModel: ListScreenViewModel,
+    modifier: Modifier = Modifier
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
@@ -72,7 +72,7 @@ fun ListScreen(
     }
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .pointerInput(Unit) {
                 detectTapGestures {
@@ -94,7 +94,7 @@ fun ListScreen(
                 CustomSnackbar(
                     snackbarHostState = snackbarHostState,
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    color = if (uiState !is ListScreenUiState.Error) BrightLightGreen else Color.Red
+                    color = Color.Red
                 )
             }
 

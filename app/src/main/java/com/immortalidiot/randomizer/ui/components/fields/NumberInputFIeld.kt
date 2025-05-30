@@ -1,4 +1,4 @@
-package com.immortalidiot.randomizer.ui.components.field
+package com.immortalidiot.randomizer.ui.components.fields
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions

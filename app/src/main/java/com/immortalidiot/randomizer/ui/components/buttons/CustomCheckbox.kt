@@ -1,4 +1,4 @@
-package com.immortalidiot.randomizer.ui.components.button
+package com.immortalidiot.randomizer.ui.components.buttons
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.scaleIn
@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CheckBox
@@ -56,8 +57,8 @@ fun CustomCheckBox(
 @Composable
 private fun CheckboxPreview() {
     RandomizerTheme {
-        Scaffold { _ ->
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Scaffold { padding ->
+            Box(modifier = Modifier.fillMaxSize().padding(padding), contentAlignment = Alignment.Center) {
                 var checked by remember { mutableStateOf(false) }
                 CustomCheckBox(
                     isSelectedOne = true,

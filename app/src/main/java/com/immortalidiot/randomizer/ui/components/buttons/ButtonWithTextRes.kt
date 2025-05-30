@@ -1,27 +1,24 @@
-package com.immortalidiot.randomizer.ui.components.button
+package com.immortalidiot.randomizer.ui.components.buttons
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import com.immortalidiot.randomizer.R
 
 @Composable
-fun GenerateButton(
+fun ButtonWithTextRes(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit,
+    textRes: Int
 ) {
     Button(
-        modifier = modifier.height(48.dp),
+        modifier = modifier,
         onClick = onClick,
     ) {
         Text(
-            text = stringResource(R.string.generate_btn).uppercase(),
+            text = stringResource(textRes),
             textAlign = TextAlign.Center
         )
     }

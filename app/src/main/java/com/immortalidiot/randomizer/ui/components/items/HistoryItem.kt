@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.immortalidiot.randomizer.R
 import com.immortalidiot.randomizer.data.ContentType
 import com.immortalidiot.randomizer.data.model.HistoryModel
-import com.immortalidiot.randomizer.ui.components.button.CustomCheckBox
+import com.immortalidiot.randomizer.ui.components.buttons.CustomCheckBox
 import java.time.format.DateTimeFormatter
 
 @Composable

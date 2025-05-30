@@ -1,4 +1,4 @@
-package com.immortalidiot.randomizer.ui.components.field
+package com.immortalidiot.randomizer.ui.components.fields
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.TextField

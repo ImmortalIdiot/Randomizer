@@ -1,7 +1,6 @@
 package com.immortalidiot.randomizer.data
 
 import androidx.room.TypeConverter
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.time.Instant
 import java.time.LocalDateTime

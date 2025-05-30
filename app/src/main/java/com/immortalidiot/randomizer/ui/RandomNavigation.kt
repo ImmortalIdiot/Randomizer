@@ -33,6 +33,7 @@ private sealed class RandomNavigation(val route: String) {
     data object ApplicationInfoRoute : RandomNavigation("about")
 }
 
+@Immutable
 data class RandomDestination(
     @StringRes val label: Int,
     val icon: ImageVector,

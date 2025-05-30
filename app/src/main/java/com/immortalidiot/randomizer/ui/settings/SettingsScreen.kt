@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -33,12 +32,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.immortalidiot.randomizer.R
 import com.immortalidiot.randomizer.ui.Routes
-import com.immortalidiot.randomizer.ui.components.field.RangeDefaultsTextField
-import com.immortalidiot.randomizer.ui.components.snackbar.LocalSnackbarHostState
-import com.immortalidiot.randomizer.ui.components.snackbar.CustomSnackbar
-import com.immortalidiot.randomizer.ui.components.snackbar.showMessage
+import com.immortalidiot.randomizer.ui.components.fields.RangeDefaultsTextField
+import com.immortalidiot.randomizer.ui.components.snackbars.CustomSnackbar
+import com.immortalidiot.randomizer.ui.components.snackbars.showMessage
+import com.immortalidiot.randomizer.ui.components.spacers.VerticalScreenSpacer
 import com.immortalidiot.randomizer.ui.providers.LocalInitialScreenChangeProvider
 import com.immortalidiot.randomizer.ui.providers.LocalInitialScreenProvider
+import com.immortalidiot.randomizer.ui.providers.LocalSnackbarHostState
 import com.immortalidiot.randomizer.ui.providers.LocalThemeChangeProvider
 import com.immortalidiot.randomizer.ui.providers.LocalThemePreferenceProvider
 import com.immortalidiot.randomizer.ui.theme.BrightLightGreen
@@ -47,7 +47,8 @@ import com.immortalidiot.randomizer.ui.theme.ThemePreference
 
 @Composable
 fun SettingsScreen(
-    viewModel: SettingsScreenViewModel
+    viewModel: SettingsScreenViewModel,
+    modifier: Modifier = Modifier
 ) {
     val onThemeChange = LocalThemeChangeProvider.current
     val themePreference = LocalThemePreferenceProvider.current
@@ -117,11 +118,9 @@ fun SettingsScreen(
         }
     }
 
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
+    Box {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .align(Alignment.TopStart)
                 .padding(start = 16.dp, top = 16.dp),
@@ -170,7 +169,7 @@ fun SettingsScreen(
                 }
             }
 
-            VerticalSpacer()
+            VerticalScreenSpacer()
 
             Header(R.string.initial_screen)
             Row(
@@ -215,7 +214,7 @@ fun SettingsScreen(
                 }
             }
 
-            VerticalSpacer()
+            VerticalScreenSpacer()
 
             Header(R.string.range_defaults)
 
@@ -252,14 +251,7 @@ fun SettingsScreen(
 }
 
 @Composable
-private fun VerticalSpacer() {
-    Spacer(modifier = Modifier.height(16.dp))
-}
-
-@Composable
-private fun Header(
-    textRes: Int
-) {
+private fun Header(textRes: Int) {
     Text(
         modifier = Modifier.padding(start = 8.dp),
         text = stringResource(textRes),

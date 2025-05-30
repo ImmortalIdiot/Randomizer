@@ -1,4 +1,4 @@
-package com.immortalidiot.randomizer.ui.components.button
+package com.immortalidiot.randomizer.ui.components.buttons
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween

@@ -20,11 +20,11 @@ import androidx.navigation.compose.rememberNavController
 import com.immortalidiot.randomizer.core.ResourceProvider
 import com.immortalidiot.randomizer.ui.RandomNavGraph
 import com.immortalidiot.randomizer.ui.Routes
-import com.immortalidiot.randomizer.ui.components.bar.BottomNavigationBar
-import com.immortalidiot.randomizer.ui.components.bar.RandomizerAppBar
-import com.immortalidiot.randomizer.ui.components.snackbar.LocalSnackbarHostState
+import com.immortalidiot.randomizer.ui.components.bars.BottomNavigationBar
+import com.immortalidiot.randomizer.ui.components.bars.RandomizerAppBar
 import com.immortalidiot.randomizer.ui.providers.LocalInitialScreenChangeProvider
 import com.immortalidiot.randomizer.ui.providers.LocalInitialScreenProvider
+import com.immortalidiot.randomizer.ui.providers.LocalSnackbarHostState
 import com.immortalidiot.randomizer.ui.providers.LocalThemeChangeProvider
 import com.immortalidiot.randomizer.ui.providers.LocalThemePreferenceProvider
 import com.immortalidiot.randomizer.ui.settings.Settings
