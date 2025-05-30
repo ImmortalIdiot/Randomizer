@@ -29,4 +29,9 @@
     <string name="system_theme">Авто</string>
 
     <string name="initial_screen">Начальный экран</string>
+
+    <string name="range_defaults">Значения по умолчанию в \"Числе\"</string>
+    <string name="enter_both">Введите оба числа</string>
+    <string name="save">Сохранить</string>
+    <string name="successful_saved">Значения по умолчанию успешно сохранены</string>
 </resources>

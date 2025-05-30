@@ -10,6 +10,8 @@ interface ResourceProvider {
     suspend fun loadTheme(): ThemePreference?
     suspend fun saveInitialScreen(route: String)
     suspend fun loadInitialScreen(): String?
+    suspend fun saveRangeDefaults(first: Long, second: Long)
+    suspend fun loadRangeDefaults(): List<Long>?
 }
 
 class ResourceProviderImpl(private val context: Context) : ResourceProvider {
@@ -29,5 +31,13 @@ class ResourceProviderImpl(private val context: Context) : ResourceProvider {
 
     override suspend fun loadInitialScreen(): String? {
         return Settings.loadInitialScreen(context)
+    }
+
+    override suspend fun saveRangeDefaults(first: Long, second: Long) {
+        return Settings.saveRangeDefaults(context, first, second)
+    }
+
+    override suspend fun loadRangeDefaults(): List<Long>? {
+        return Settings.loadRangeDefaults(context)
     }
 }

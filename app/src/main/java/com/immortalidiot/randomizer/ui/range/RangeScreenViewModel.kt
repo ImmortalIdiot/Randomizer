@@ -4,7 +4,9 @@ import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.immortalidiot.randomizer.R
+import com.immortalidiot.randomizer.core.FIRST_VALUE_DEFAULT
 import com.immortalidiot.randomizer.core.ResourceProvider
+import com.immortalidiot.randomizer.core.SECOND_VALUE_DEFAULT
 import com.immortalidiot.randomizer.core.UI_STATE_DELAY
 import com.immortalidiot.randomizer.data.ContentType
 import com.immortalidiot.randomizer.data.history.HistoryRepository
@@ -15,9 +17,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-
-private const val FIRST_VALUE_DEFAULT = "1"
-private const val SECOND_VALUE_DEFAULT = "2"
 
 class RangeScreenViewModel(
     private val historyRepository: HistoryRepository,
@@ -34,6 +33,16 @@ class RangeScreenViewModel(
 
     private val _result = MutableStateFlow("")
     val result = _result.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            viewModelScope.launch {
+                val pair = resourceProvider.loadRangeDefaults()
+                _firstField.value = pair?.get(0)?.toString() ?: FIRST_VALUE_DEFAULT
+                _secondField.value = pair?.get(1)?.toString() ?: SECOND_VALUE_DEFAULT
+            }
+        }
+    }
 
     fun updateFirstField(newValue: String) {
         _firstField.value = newValue

@@ -44,9 +44,10 @@ suspend fun SnackbarHostState.showMessage(message: String) {
 }
 
 @Composable
-fun ErrorSnackbar(
+fun CustomSnackbar(
     snackbarHostState: SnackbarHostState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    color: Color
 ) {
     Box {
         SnackbarHost(
@@ -55,7 +56,7 @@ fun ErrorSnackbar(
         ) { snackbarData ->
             Snackbar(
                 contentColor = Color.White,
-                containerColor = Color.Red,
+                containerColor = color,
             ) {
                 Text(
                     modifier = modifier.fillMaxWidth(),
@@ -104,7 +105,7 @@ private fun SnackbarPreview() {
                         }
                     }
                 }
-                ErrorSnackbar(snackbarHostState = snackbarHostState)
+                CustomSnackbar(snackbarHostState = snackbarHostState, color = Color.Red)
             }
         }
     }

@@ -26,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -36,9 +37,10 @@ import androidx.compose.ui.unit.dp
 import com.immortalidiot.randomizer.R
 import com.immortalidiot.randomizer.ui.components.button.GenerateButton
 import com.immortalidiot.randomizer.ui.components.field.UnderlineEmptyText
-import com.immortalidiot.randomizer.ui.components.snackbar.ErrorSnackbar
+import com.immortalidiot.randomizer.ui.components.snackbar.CustomSnackbar
 import com.immortalidiot.randomizer.ui.components.snackbar.LocalSnackbarHostState
 import com.immortalidiot.randomizer.ui.components.snackbar.showMessage
+import com.immortalidiot.randomizer.ui.theme.BrightLightGreen
 import com.immortalidiot.randomizer.ui.theme.RandomizerTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -89,9 +91,10 @@ fun ListScreen(
             contentPadding = PaddingValues(bottom = 96.dp)
         ) {
             item {
-                ErrorSnackbar(
+                CustomSnackbar(
                     snackbarHostState = snackbarHostState,
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    color = if (uiState !is ListScreenUiState.Error) BrightLightGreen else Color.Red
                 )
             }
 

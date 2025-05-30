@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.first
 object Settings {
     private val KEY_THEME = stringPreferencesKey(name = "theme")
     private val KEY_INITIAL_SCREEN = stringPreferencesKey(name = "initial_screen")
+    private val KEY_RANGE_DEFAULTS = stringPreferencesKey(name = "range_defaults")
 
     private val Context.settingsDatastore by preferencesDataStore(name = "settings")
 
@@ -34,5 +35,18 @@ object Settings {
     suspend fun loadInitialScreen(context: Context): String? {
         val preference = context.settingsDatastore.data.first()
         return preference[KEY_INITIAL_SCREEN]
+    }
+
+    suspend fun saveRangeDefaults(context: Context, first: Long, second: Long) {
+        context.settingsDatastore.edit {
+            it[KEY_RANGE_DEFAULTS] = listOf(first, second).joinToString(",")
+        }
+    }
+
+    suspend fun loadRangeDefaults(context: Context): List<Long>? {
+        val preference = context.settingsDatastore.data.first()
+        return preference[KEY_RANGE_DEFAULTS]
+            ?.split(",")
+            ?.mapNotNull { it.trim().toLongOrNull() }
     }
 }

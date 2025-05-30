@@ -29,4 +29,9 @@
     <string name="system_theme">Auto</string>
 
     <string name="initial_screen">Initial Screen</string>
+
+    <string name="range_defaults">Range defaults</string>
+    <string name="enter_both">Enter both numbers</string>
+    <string name="save">Save</string>
+    <string name="successful_saved">Range defaults saved successfully</string>
 </resources>
